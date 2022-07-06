@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>BLOGIIEY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/build.js" defer></script>
+    <link rel="stylesheet" href="css/editor.css">
+    <!-- <link rel="stylesheet" href="css/prism.css"> -->
+  </head>
+  <body>
+    <div id="contextmenu">
+      <div class="contextbutton c1" onmouseup="pushH()">
+        <span class="material-icons">label_important_outline</span>
+        <div>見出し</div>
+      </div>
+      <div class="contextbutton c2">
+        <span class="material-icons" onmouseup="pushImage()">image</span>
+        <div>画像</div>
+      </div>
+      <div class="contextbutton c3">
+        <span class="material-icons" onmouseup="pushLine()">horizontal_rule</span>
+        <div>罫線</div>
+      </div>
+      <div class="contextbutton c4">
+        <span class="material-icons" onmouseup="pushCode()">code</span>
+        <div>コード</div>
+      </div>
+    </div>
+    <div id="controller">
+      <!-- <input type="button" value="未生成のファイルをビルド" onclick="buildUngenerated()">
+      <input type="button" value="更新されたファイルをビルド" onclick="buildModified()">
+      <input type="button" value="すべてのファイルをビルド" onclick="buildAll()"><br> -->
+      <input type="button" value="ファイル" onclick="openFileList()">
+      <input type="button" value="セーブ" onclick="saveThis()">
+      <input type="button" value="新規作成" onclick="createNew()">
+      <input type="button" value="ビルド" onclick="buildThis()">
+      <input type="button" value="リロード" onclick="reloadThis()">
+      <input type="button" value="設定" onclick="reloadThis()">
+      <!-- <input type="text" id="filename" onkeypress="readFile(event.keyCode);"> -->
+      <!-- <br>
+      <input type="button" value="見出し" onclick="pushH()">
+      <input type="button" value="罫線" onclick="pushLine()">
+      <input type="button" value="太字" onclick="pushBold()">
+      <input type="button" value="画像" onclick="pushImage()">
+      <input type="button" value="Twitter" onclick="pushTwitter()">
+      <input type="button" value="引用" onclick="pushBlockQuote()"> -->
+    </div>
+    <div id="discription">
+      <div>
+        <div class="datediv" style="float: left">
+          <span class="discletter">投稿日：</span>
+          <input type="text" id="edit-date" onchange="changeDate()">
+        </div>
+        <div class="datediv">
+          <span class="discletter">更新日：</span>
+          <input type="text" id="edit-modified" onchange="changeModified()">
+        </div>
+      </div>
+      <span class="discletter">タイトル：</span>
+      <input type="text" id="edit-title" onchange="changeTitle()"><br>
+      <span class="discletter">タグ：</span>
+      <input type="text" id="edit-tags"  onchange="changeTags()">
+    </div>
+    <span id="editorleft"></span>
+    <textarea id="editor" oninput="inputText()"></textarea>
+
+    <div id="buffer"></div>
+    <div id="filelist-cancel" onclick="cancelFileList()"></div>
+    <div id="filelist-bg">
+      <div id="filelist-box">
+        <div id="filelist-title"></div>
+        <div id="filelist-head">
+          <div class="headfilenumber">ID</div>
+          <div class="headfiletitle">タイトル</div>
+          <!-- <div class="filetags">タグ</div> -->
+          <div class="headfiledate">投稿日</div>
+          <!-- <div class="filemodified">更新日</div> -->
+          <div class="headfilecommands">
+            <span>編集</span>
+            <span>公開</span>
+            <span>削除</span>
+          </div>
+        </div>
+        <div id="filelist"></div>
+        <!-- <div class="fileList">
+          <div id="fileNumber">ファイル名</div>
+          <div id="fileTitle">タイトル</div>
+          <div id="fileTags">タグ</div>
+          <div id="fileDate">投稿日</div>
+          <div id="fileModified">更新日</div>
+        </div> -->
+      </div>
+    </div>
+    
+    
+  </body>
+</html>

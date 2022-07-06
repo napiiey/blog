@@ -1,0 +1,9 @@
+{
+  "name":"Blogiiey",
+  "version":"1.0.0",
+  "main":"src/index.html",
+  "window": {
+    "position": "none",
+    "icon": "src/data/icon.png"
+  }
+}

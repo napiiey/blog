@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>なぴぃブログ</title>
+    <!-- <base href="nwjs/src/"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/blog.css">
+    <script src="js/database.js" defer></script>
+    <script src="js/blog.js" defer></script>
+    <script src="js/index.js" defer></script>
+</head>
+<body>
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログ</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="articles">
+
+        </section>
+    </main>
+    <footer id=footer>
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>
