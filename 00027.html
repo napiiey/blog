@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>ブログタイトル決定！</title>
+    <base href="nwjs/src/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/blog.css">
+    <script src="js/blog.js" defer=""></script>
+    <!-- <script src="js/prism.js" defer></script> -->
+</head>
+<body>
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログでいい</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+<option>javascript</option>
+<option>Web</option>
+<option>雑記</option>
+
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="articlehead">
+                <span id="date">2022/7/7</span>
+                <span id="modified" style="visibility: hidden;"></span>
+                <h1 id="title">ブログタイトル決定！</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>雑記</a></div>
+            </div>
+            <div id="textouter">
+                <div id="text"><p class="contents">ブログのタイトルを仮で「なぴぃブログ」にしていたんですが、もうちょっとひねりがあった方がいいかなあって思っていくつか候補を出しアンケートを取ってみる事にしました。
+
+</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ブログのタイトル「なぴぃブログ」だとひねりなさすぎだなあと思って何かつけようと思ってるんですがどれがいいと思いますか？</p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1544910027047444480?ref_src=twsrc%5Etfw">July 7, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+接戦の末得票数が一番多かった
+<p></p><h4>「なぴぃブログでいい」に決定しました！</h4><p class="contents">投票してくださった方々ありがとうございました。</p></div>
+            </div>
+        </section>
+    </main>
+    <footer id="footer">
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>
