@@ -208,8 +208,8 @@ img {
     border-left: 8px solid rgb(52, 94, 85);
 }
 .code {
-    width: calc(100% + 4px);
-    margin-left: -40px !important;
+    /* width: calc(100% + 4px);
+    margin-left: -40px !important; */
 }
 
 
