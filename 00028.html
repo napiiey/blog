@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>TextMeshPro フォントAtlas作成のコツ</title>
+    <base href="nwjs/src/">
+    <!-- Google Tag Manager -->
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N69M6GF');</script>
+    <!-- End Google Tag Manager -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="css/blog.css">
+    <script src="js/blog.js" defer=""></script>
+    <!-- <script src="js/prism.js" defer></script> -->
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログでいい</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+<option>javascript</option>
+<option>Web</option>
+<option>雑記</option>
+<option>Unity</option>
+
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="articlehead">
+                <span id="date">2022/7/18</span>
+                <span id="modified" style="visibility: hidden;"></span>
+                <h1 id="title">TextMeshPro フォントAtlas作成のコツ</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a></div>
+            </div>
+            <div id="textouter">
+                <div id="text"><p class="contents">TextMeshProでフォントを表示するにはFont Atlasの作成が必要になります。
+このAtlasの作成に毎度失敗して調べなおしになるのでひっかかりやすいポイントと情報をまとめる事にしました。（Unity 2021.3.2f1）
+
+</p><h3 class="textCaption">フォントAtlasの作成手順</h3><p class="contents"></p><ul><li>Window &gt; TextMeshPro &gt; Font Asset Creator　を開きます。
+</li><li>設定を調整した後「Generate Font Atlas」でフォントを作成します。
+</li><li>ジェネレート時のログで「Excluded characters」が1以上になっている場合はAtlas Resolutionが足りません。最下部に表示される画像がスカスカな場合は逆にAtlas Resolutionが余っているので小さくします。
+</li><li>Save As でフォント用に作成したフォルダに保存します。</li></ul>
+<p></p><h3 class="textCaption">Font Asset Creator の設定項目</h3><p class="contents"></p><ul><li>Source Font File　元になるフォントを選択します
+</li><li>Sampling Point Size　Auto Sizing だと思わぬサイズで作成されてしまいフォントがつぶれたりする為必ずCustomSizeで作成します。サイズは50程あればそこそこ大きいサイズで描画してもつぶれません。フォントの角が丸まってもよい場合は20程度まで小さくできます。
+</li><li>Padding　この値が小さすぎると文字装飾で使える余白が減り太いOutlineや大きくずらしたUnderlayが使えません。Sampling Point Size の20%程度確保するとある程度自由に設定できるようになります。
+</li><li>Packing Mwthod　Fastで問題なさそうです。
+</li><li>Atlas Resolution　アトラスを展開できる領域のサイズです。日本語をほぼカバーするには4096x4096程度は必要になります。先ほど書いた作成手順を参考に調整します。
+</li><li>Charactor Set　日本語フォントの場合は Custom Character を選択し Custom Character Listに使用する文字一覧を入力します。（参考1：<a href="https://qiita.com/kgsi/items/08a1c78b3bee71136156">UnityのText Mesh Proでほぼ全ての日本語を表示させる</a>　参考2：<a https:="" www.create-forever.games="" textmeshpro-character-list="" "="">[TextMeshPro]日本語一覧</a>）
+</li><li>Render Mode　基本はSDFAAで。SDF16等を使うと大きく表示した時もキリっと表示できるように感じましたが作成にすごく時間がかかります。
+</li><li>Get Kerning Pairs　特定文字ペア間の間隔を調整する為のデータを元のフォントからコピーします。</li></ul>
+（参考：<a　href="https: docs.unity3d.com="" packages="" com.unity.textmeshpro@4.0="" manual="" fontassetscreator.html"="">Font Asset Creator | TextMeshPro | 4.0.0-pre.1 - Unity - Manual<p></p></a　href="https:></div>
+            </div>
+        </section>
+    </main>
+    <footer id="footer">
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>
