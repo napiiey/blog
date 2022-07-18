@@ -15,4 +15,6 @@ TextMeshProでフォントを表示するにはFont Atlasの作成が必要に�
 ・Charactor Set　日本語フォントの場合は Custom Character を選択し Custom Character Listに使用する文字一覧を入力します。（参考1：<a href="https://qiita.com/kgsi/items/08a1c78b3bee71136156">UnityのText Mesh Proでほぼ全ての日本語を表示させる</a>　参考2：<a https://www.create-forever.games/textmeshpro-character-list/">[TextMeshPro]日本語一覧</a>）
 ・Render Mode　基本はSDFAAで。SDF16等を使うと大きく表示した時もキリっと表示できるように感じましたが作成にすごく時間がかかります。
 ・Get Kerning Pairs　特定文字ペア間の間隔を調整する為のデータを元のフォントからコピーします。
+<img src="image/048acd357855b0be44624443dc408bbf.png">
+
 （参考：<a　href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/FontAssetsCreator.html">Font Asset Creator | TextMeshPro | 4.0.0-pre.1 - Unity - Manual</a>
