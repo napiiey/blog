@@ -101,6 +101,9 @@ const convertText = function(){
     convertMultiLines("- ", '<li>', '<ul>', '</ul>');
     convertMultiLines("・", '<li>', '<ul>', '</ul>');
     convertMarks("```js", "```", '<pre class="line-numbers code"><code class="language-js">', '</code></pre>');
+    convertMarks("```html", "```", '<pre class="line-numbers code"><code class="language-html">', '</code></pre>');
+    convertMarks("```css", "```", '<pre class="line-numbers code"><code class="language-css">', '</code></pre>');
+    convertMarks("```cs", "```", '<pre class="line-numbers code"><code class="language-cs">', '</code></pre>');
     convertLines("####", "\n", '<h4>', '</h4>');
     convertLines("###", "\n", '<h3 class="textCaption">', '</h3>');
 }
