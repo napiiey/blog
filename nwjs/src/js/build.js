@@ -286,7 +286,6 @@ const buildThis = function(){
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@napiiey">
     <meta property="twitter:title" content="${description.title}"></meta>
-    <meta property="twitter:description" content="${descriptionText}"></meta>
     <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>`);
 
     console.log(resultHtml);
