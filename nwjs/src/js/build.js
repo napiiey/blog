@@ -269,6 +269,28 @@ const buildThis = function(){
     let allTags = createAllTags();
     let allTagsHtml = createAllTagsHtml(allTags);
     resultHtml = resultHtml.replace('<option>全てのタグ</option>', '<option>全てのタグ</option>\n' + allTagsHtml);
+    resultHtml = resultHtml.replace('<a id="twittershare" href=""></a>', 
+    `<a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+&text=${description.title}"></a>`);
+    let descriptionText = preview.document.getElementById("text").innerText;
+    descriptionText = descriptionText.slice(0,200);
+    descriptionText = descriptionText.replace(/\s+/g,"");
+    descriptionText = descriptionText.slice(0,99) + "…";
+    resultHtml = resultHtml.replace('<meta property="og:title" content="">',
+    `    <meta property="og:title" content="${description.title}">
+    <meta property="og:description" content="${descriptionText}">
+    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="${description.title}"></meta>
+    <meta property="twitter:description" content="${descriptionText}"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>`);
+
+    console.log(resultHtml);
+    
     fs.writeFileSync("../"+String(description.number).padStart(5,"0")+".html", resultHtml);
 
     description.public = 1;

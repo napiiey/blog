@@ -38,6 +38,44 @@ main{
         width: auto;
     }
 }
+#leftcolumn {
+    position: sticky;
+    top: 0px;
+    width: calc((100% - 820px)/2);
+    float: left;
+}
+#twittershare {
+    background-color: #1DA1F2;
+    background-image: url("../image/2021 Twitter logo - white.png");
+    background-size: 42px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    margin-top: 100px;
+    margin-right: 26px;
+    float: right;
+}
+#twittershare:hover {
+    background-color: #62bcf3;
+}
+#twittershare::after {
+    content: 'ツイート';
+    position: absolute;
+    white-space: nowrap;
+    top: 186px;
+    right: 34px;
+    font-weight: bold;
+    color: var(--assortcolor);
+}
+#rightcolumn {
+    position: sticky;
+    top: 0px;
+    width: calc((100% - 820px)/2);
+    background-color: #8d9b3c;
+    float: right;
+}
 footer{
     background-color: #999;
     color: var(--fontcolorlight);

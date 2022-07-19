@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
     <meta charset="utf-8">
-    <title>Unityのデバッグログでオブジェクトの中身を一覧表示する</title>
+    <title>【Unity】デバッグログでオブジェクトの中身を一覧表示する</title>
     <base href="nwjs/src/">
     <!-- Google Tag Manager -->
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -15,7 +15,17 @@
     <link rel="stylesheet" href="css/blog.css">
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer=""></script>
-    <!-- <script src="js/prism.js" defer></script> -->
+        <meta property="og:title" content="【Unity】デバッグログでオブジェクトの中身を一覧表示する">
+    <meta property="og:description" content="UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。JavascriptでChromeDevtoolsに慣れ親しんだ身としては中…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="【Unity】デバッグログでオブジェクトの中身を一覧表示する"></meta>
+    <meta property="twitter:description" content="UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。JavascriptでChromeDevtoolsに慣れ親しんだ身としては中…"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -34,7 +44,7 @@
 <option>Web</option>
 <option>雑記</option>
 <option>Unity</option>
-<option>C#</option>
+<option>C＃</option>
 
                 </select>
             </div>
@@ -45,13 +55,18 @@
             </div>
         </div>
     </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+&text=【Unity】デバッグログでオブジェクトの中身を一覧表示する"></a>
+    </div>
+    <div id="rightcolumn"></div>
     <main>
         <section>
             <div class="articlehead">
                 <span id="date">2022/7/19</span>
                 <span id="modified" style="visibility: hidden;"></span>
-                <h1 id="title">Unityのデバッグログでオブジェクトの中身を一覧表示する</h1>
-                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C#</a></div>
+                <h1 id="title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C＃</a></div>
             </div>
             <div id="textouter">
                 <div id="text"><p class="contents">UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。Javascriptで Chrome Devtools に慣れ親しんだ身としては中身を全て確認させてくれー！と思ってしまいます。
