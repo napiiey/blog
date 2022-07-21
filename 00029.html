@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
     <link rel="stylesheet" href="css/blog.css">
     <link rel="stylesheet" href="css/prism.css">
-    <script src="js/blog.js" defer=""></script>
+    <script src="js/blog.js" defer></script>
         <meta property="og:title" content="【Unity】デバッグログでオブジェクトの中身を一覧表示する">
     <meta property="og:description" content="UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。JavascriptでChromeDevtoolsに慣れ親しんだ身としては中…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
@@ -114,6 +114,64 @@ Chrome devtools のように展開したりはできませんが、とりあえ�
 </p></div>
             </div>
         </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+
+        <a href="../../00028.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/18</span>
+        <span class="i-modified"></span>
+        <div class="i-title">TextMeshPro フォントAtlas作成のコツ</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a></div>
+        </div>
+        </a>
+
+        <a href="../../00022.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/7</span>
+        <span class="i-modified"></span>
+        <div class="i-title">静的サイトジェネレーターつきブログエディターを作ってみた1</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+        <a href="../../00027.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/7</span>
+        <span class="i-modified"></span>
+        <div class="i-title">ブログタイトル決定！</div>
+        <div class="i-tags"><a href="../../index.html?tag=雑記" class="tagblock link-gray">
+            <span class="material-icons">sell</span>雑記</a></div>
+        </div>
+        </a>
+
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4><span class="material-icons">forum</span>コメント</h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
     </main>
     <footer id="footer">
         <div id="license">

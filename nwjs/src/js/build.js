@@ -265,7 +265,9 @@ const build = function(number){
 }
 const buildThis = function(){
     let resultHtml = '<!DOCTYPE html>\n' + preview.document.documentElement.outerHTML;
-    resultHtml = resultHtml.replace('</title>','</title>\n    <base href="nwjs/src/">')
+    resultHtml = resultHtml.replace('</title>','</title>\n    <base href="nwjs/src/">');
+    resultHtml = resultHtml.replace('<!-- <script src="js/blog.js" defer></script> -->','<script src="js/blog.js" defer></script>');
+    
     let allTags = createAllTags();
     let allTagsHtml = createAllTagsHtml(allTags);
     resultHtml = resultHtml.replace('<option>全てのタグ</option>', '<option>全てのタグ</option>\n' + allTagsHtml);
@@ -287,7 +289,8 @@ const buildThis = function(){
     <meta name="twitter:site" content="@napiiey">
     <meta property="twitter:title" content="${description.title}"></meta>
     <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>`);
-    
+    const relatedPages = makeRelatedPages();
+    resultHtml = resultHtml.replace('<section id="articles">', '<section id="articles">\n' + relatedPages);
     fs.writeFileSync("../"+String(description.number).padStart(5,"0")+".html", resultHtml);
 
     description.public = 1;
@@ -297,9 +300,53 @@ const buildThis = function(){
 
     buildTopPage();
 }
+const makeRelatedPages = function(){
+    let articleHeads = "";
+    const thisDate = new Date(description.date);
+    let  database = descriptions.slice(0,descriptions.length);
+    database.splice(description.number,1); //現在のページを除外
+    database = database.filter(e=>e && e.public); //非公開ページを除外
+    database.forEach((e,index)=>{
+        let matchTagCount = 0;
+        description.tags.forEach(e2=>{
+            if(e.tags.includes(e2)){matchTagCount++};
+        });
+        const date = new Date(e.date);
+        let relevance = (date - thisDate) / 86400000;
+        if(Math.sign(relevance) === -1){
+            relevance = (relevance * -1) +0.5;
+        }
+        relevance = (matchTagCount + 1) * 100000 - relevance;
+        database[index].relevance = relevance;
+    });
+    database.sort((a,b)=>{
+        return b.relevance - a.relevance;
+    });
+
+    let relatedPagesCount = 5; //関連記事表示数
+    for(let i = 0; i < relatedPagesCount; i++){
+        if(!database[i]){break;}
+        const e = database[i];
+        let tagBlocks = "";
+        e.tags.forEach(e2=>{
+            tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
+            <span class="material-icons">sell</span>${e2}</a>`
+        });
+        articleHeads = articleHeads + `
+        <a href="../../${String(e.number).padStart(5,"0")}.html">
+        <div class="i-articlehead">
+        <span class="i-date">${e.date}</span>
+        <span class="i-modified">${e.modified}</span>
+        <div class="i-title">${e.title}</div>
+        <div class="i-tags">${tagBlocks}</div>
+        </div>
+        </a>\n`;
+    }
+    return articleHeads;
+}
 const buildTopPage = function(){
     let result = fs.readFileSync("src/index_template.html", "utf-8");
-    let articleHead = "";
+    let articleHeads = "";
     const database = descriptions.filter(e=>e && e.public);
     let allTags = createAllTags();
     let allTagsHtml = createAllTagsHtml(allTags);
@@ -309,6 +356,7 @@ const buildTopPage = function(){
 
     database.some((e, index)=>{
         if(index >= 20){
+            // 現在は未実装
             // 1, 2, 3, といった20番目以上を表示するリンクを追加する処理を書く
             // return true;
         }
@@ -317,7 +365,7 @@ const buildTopPage = function(){
             tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
             <span class="material-icons">sell</span>${e2}</a>`
         });
-        articleHead = `
+        articleHeads = `
         <a href="../../${String(e.number).padStart(5,"0")}.html">
         <div class="i-articlehead">
         <span class="i-date">${e.date}</span>
@@ -325,13 +373,13 @@ const buildTopPage = function(){
         <div class="i-title">${e.title}</div>
         <div class="i-tags">${tagBlocks}</div>
         </div>
-        </a>\n` + articleHead;
-        // console.log(articleHead);
+        </a>\n` + articleHeads;
+        // console.log(articleHeads);
     });
     
     result = result.replace('<!-- <base href="nwjs/src/"> -->', '<base href="nwjs/src/">');
     result = result.replace('<option>全てのタグ</option>', '<option>全てのタグ</option>\n' + allTagsHtml);
-    result = result.replace('<section id="articles">', '<section id="articles">\n' + articleHead);
+    result = result.replace('<section id="articles">', '<section id="articles">\n' + articleHeads);
     fs.writeFileSync("../index.html", result);
 }
 const createAllTags = function(){

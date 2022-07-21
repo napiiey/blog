@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"  media="print" onload="this.media='all'">
     <link rel="stylesheet" href="css/blog.css">
     <link rel="stylesheet" href="css/prism.css">
-    <script src="js/blog.js" defer></script>
+    <!-- <script src="js/blog.js" defer></script> -->
     <meta property="og:title" content="">
 </head>
 <body>
@@ -57,6 +57,32 @@
                 </div>
             </div>
         </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4><span class="material-icons">forum</span>コメント</h4>
+                <textarea id="commentInput" placeholder="コメント" required></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();"/>
+            </form>
+            <div id="comments"></div>
+        </div>
     </main>
     <footer id=footer>
         <div id="license">
