@@ -321,7 +321,7 @@ const buildThis = function(){ //ビルド
     let allTagsHtml = createAllTagsHtml(allTags);
     resultHtml = resultHtml.replace('<option>全てのタグ</option>', '<option>全てのタグ</option>\n' + allTagsHtml);
     resultHtml = resultHtml.replace('<a id="twittershare" href=""></a>', 
-    `<a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+    `<a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/${String(description.number).padStart(5,"0")}.html
 &text=${description.title}"></a>`);
     let descriptionText = preview.document.getElementById("text").innerText;
     descriptionText = descriptionText.slice(0,200);

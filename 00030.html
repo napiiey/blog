@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head prefix="og:http://ogp.me/ns#">
     <meta charset="utf-8">
-    <title>ブログの関連記事表示機能を実装する</title>
+    <title>【Unity】デバッグログでオブジェクトの中身を一覧表示する</title>
     <base href="nwjs/src/">
     <!-- Google Tag Manager -->
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="ブログの関連記事表示機能を実装する">
-    <meta property="og:description" content="ブログに最低限の機能しか実装していなかったので各機能を実装していきます。理想の関連記事表示内容の続いている次の記事は一番上に表示したい。次いで同じタグが多い記事。その中で日数の近い記事から表示。この…">
+    <meta property="og:description" content="UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。JavascriptでChromeDevtoolsに慣れ親しんだ身としては中…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -55,36 +55,63 @@
         </div>
     </header>
     <div id="leftcolumn">
-        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00030.html
 &text=ブログの関連記事表示機能を実装する"></a>
     </div>
     <div id="rightcolumn"></div>
     <main>
         <section>
             <div class="articlehead">
-                <span id="date">2022/7/21</span>
+                <span id="date">2022/7/19</span>
                 <span id="modified" style="visibility: hidden;"></span>
-                <h1 id="title">ブログの関連記事表示機能を実装する</h1>
-                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>javascript</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Web</a></div>
+                <h1 id="title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C＃</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
+                <div id="text"><p class="contents">UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。Javascriptで Chrome Devtools に慣れ親しんだ身としては中身を全て確認させてくれー！と思ってしまいます。
 
-</p><h3 class="textCaption">理想の関連記事表示</h3><p class="contents"></p><ul><li>内容の続いている次の記事は一番上に表示したい。
-</li><li>次いで同じタグが多い記事。
-</li><li>その中で日数の近い記事から表示。</li></ul>
-この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
+</p><h4>とりあえず調べてみた</h4><p class="contents">いい方法がないかざっくり調べたところ、配列をjoinメソッドで連結して表示する方法がひっかかりました。でもこれでは型毎に文字列変換しなければならないので何かいい方法がないか考えてみました。
 
-<p></p><h3 class="textCaption">どうやって実装するか</h3><p class="contents">後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
-</p><ul><li>タグの一致数と投稿日時によって関連度を計算
-</li><li>関連度によって並び替えて5つ程取り出す</li></ul>
-関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
+</p><h3 class="textCaption">JSON文字列化してログ表示するメソッドを作る</h3><p class="contents">JSON化すれば中身を一覧表示できるじゃないかと思って試してみました。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">using</span> <span class="token namespace">Newtonsoft<span class="token punctuation">.</span>Json</span><span class="token punctuation">;</span>
 
-そして実装できたものがこのページの下に表示されている関連記事になります。
+<span class="token keyword">namespace</span> <span class="token namespace">UnityEngine</span><span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">DeepLog</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Log</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> obj<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token class-name"><span class="token keyword">var</span></span> jsonText <span class="token operator">=</span> JsonConvert<span class="token punctuation">.</span><span class="token function">SerializeObject</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//JSON化</span>
+            <span class="token class-name"><span class="token keyword">string</span></span> type <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//型表示</span>
+            type <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"System."</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"&lt;color=yellow&gt;</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">jsonText</span><span class="token punctuation">}</span></span><span class="token string">&lt;/color&gt;   &lt;color=#888888&gt; (</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">type</span><span class="token punctuation">}</span></span><span class="token string">)&lt;/color&gt;"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//色をつけて表示</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+このメソッドを使って以下の5つの型を表示してみます。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">    <span class="token comment">//表示するもの</span>
+    <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        DeepLog<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token number">77777</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<p></p><h4>おまけ</h4><p class="contents">おまけでシェア機能とコメント機能も追加しました。
-コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
-ようやく一般的なブログっぽい機能がそろってきました。</p></div>
+        DeepLog<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"あいうえお"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> test1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">string</span></span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token string">"tes1"</span><span class="token punctuation">,</span><span class="token string">"tes2"</span><span class="token punctuation">,</span><span class="token string">"tes3"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        DeepLog<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span>test1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> test2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">int</span></span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        DeepLog<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span>test2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">RoomData</span> room <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RoomData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        DeepLog<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span>room<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//自作クラス</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+実行！
+<img src="image/be64c5bb41bbe7bb845d4eb679598307.png">
+上手くいきました。
+
+JSON化に関してパフォーマンス的にはSystem.Text.Jsonの方がいいみたいですが対応している型が多いらしいという事でNewtonsoft.Jsonを使用しました。
+
+Chrome devtools のように展開したりはできませんが、とりあえずUnityで手軽にオブジェクトの中身が表示できるようになりました。
+
+</p></div>
             </div>
         </section>
         <div id="credit-back">
