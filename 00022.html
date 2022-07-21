@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
     <meta charset="utf-8">
-    <title>静的サイトジェネレーターつきブログエディターを作ってみた1</title>
+    <title>ブログの関連記事表示機能を実装する</title>
     <base href="nwjs/src/">
     <!-- Google Tag Manager -->
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -13,8 +13,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
     <link rel="stylesheet" href="css/blog.css">
-    <script src="js/blog.js" defer=""></script>
-    <!-- <script src="js/prism.js" defer></script> -->
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/blog.js" defer></script>
+        <meta property="og:title" content="静的サイトジェネレーターつきブログエディターを作ってみた1">
+    <meta property="og:description" content="ブログに最低限の機能しか実装していなかったので各機能を実装していきます。理想の関連記事表示内容の続いている次の記事は一番上に表示したい。次いで同じタグが多い記事。その中で日数の近い記事から表示。この…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="静的サイトジェネレーターつきブログエディターを作ってみた1"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -32,6 +42,8 @@
 <option>javascript</option>
 <option>Web</option>
 <option>雑記</option>
+<option>Unity</option>
+<option>C＃</option>
 
                 </select>
             </div>
@@ -42,63 +54,90 @@
             </div>
         </div>
     </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+&text=静的サイトジェネレーターつきブログエディターを作ってみた1"></a>
+    </div>
+    <div id="rightcolumn"></div>
     <main>
         <section>
             <div class="articlehead">
-                <span id="date">2022/7/7</span>
+                <span id="date">2022/7/21</span>
                 <span id="modified" style="visibility: hidden;"></span>
-                <h1 id="title">静的サイトジェネレーターつきブログエディターを作ってみた1</h1>
+                <h1 id="title">ブログの関連記事表示機能を実装する</h1>
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>javascript</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Web</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">エディター機能付き静的サイトジェネレーターをJavascript + NW.jsで作ってみました。
+                <div id="text"><p class="contents">ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
 
-</p><h3 class="textCaption">作ったきっかけ</h3><p class="contents">ゲーム開発の技術ブログでもはじめようかなあと思ってたんですがどう公開するか悩んでました。
+</p><h3 class="textCaption">理想の関連記事表示</h3><p class="contents"></p><ul><li>内容の続いている次の記事は一番上に表示したい。
+</li><li>次いで同じタグが多い記事。
+</li><li>その中で日数の近い記事から表示。</li></ul>
+この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
 
-</p><h4>1, オンラインのブログサービスを使う</h4><p class="contents">はてなブログやBlogger、qiita、zenn等
-使いやすさや記事の露出という点ではいい選択だと思います。
+<p></p><h3 class="textCaption">どうやって実装するか</h3><p class="contents">後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
+</p><ul><li>タグの一致数と投稿日時によって関連度を計算
+</li><li>関連度によって並び替えて5つ程取り出す</li></ul>
+関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
 
-しかしながら無料で使えるものはユーザビリティーの低くなるような広告がつくか内容が縛られたりできることが限られる傾向がありました。
-また、無料サービスは突然サービス終了したり有料化したりといった事もよくあります。
+そして実装できたものがこのページの下に表示されている関連記事になります。
 
-</p><h4>2、CMSを使う。</h4><p class="contents">wordpressの公開にはデータベース等が使えるサーバーが必要なためサーバー代がかかります。
-また、静的サイトと比べて少し重めになる傾向があります。
-
-</p><h4>3、静的サイトジェネレーターを使う。</h4><p class="contents">HUGO、Gatsby、Jekyll等
-静的サイトなのでサイトがとても軽いです。
-
-しかしコマンド操作やマークダウンを直接書くのはたまにしか書かないであろう自分の用途には適さない気がしました。
-短い期間書き続ける分には慣れるためとても速く記事を書けるようになると思いますが、期間が空く場合コマンドや記述法を確実に忘れる自身があります。
-
-</p><h4>4、GUI付き静的サイトジェネレーターを使う。</h4><p class="contents">Publii、Gitbook、Catalpa、Phest等
-調べてたらGUI付きの静的サイトジェネレーターというものもあるようでした。かなり理想に近いものもありそうでしたがここまで来ると欲がでてしまいます。
-
-</p><h3 class="textCaption">ほしい機能</h3><p class="contents">
-</p><ul><li>GitHubPages等無料のホスティングサービスを使いたいためCMSではなく静的サイトジェネレーターで。
-</li><li>操作はすべてGUIでできるようにする。
-</li><li>欲を言うなら自分で使いやすくカスタマイズできるエディター付きで。
-</li><li>コードが汚れるのが嫌なのでエディターはWYSWYGではなくマークダウンで。なおかつHTMLも使えるようにしたい。
-</li><li>マークダウンはGUIコンテキストメニューで簡単に挿入できるようにしたい。
-</li><li>基本はHugo等でも使われるマークダウンだけど見やすさ重視で日本語入力でも入力しやすい独自マークダウンも導入したい。
-</li><li>エディターではテキストとして入力したいが作りこみたい時はVSCodeでタグを打てるようにしたいのでビルド元のデータはHTMLファイルで。
-</li><li>見た目を確認するビュアーはサイズをいろいろ変えて見たいので別ウィンドウがいい。
-</li><li>VSCodeのように保存していないデータも自動でバックアップを取りたい。</li></ul>
-
-<p></p><h3 class="textCaption">何でつくるか</h3><p class="contents">いろいろ新しい技術に挑戦してみたくはあったんですが、ほとんどがHTMLのDOM操作的な内容になってくるためHTMLと親和性の高いJavascriptで全部作る事にしました。
-
-プラットフォームはシンプルにWebサイトをデスクトップアプリとして表示する事が得意なNW.jsにしました。
-
-</p><h3 class="textCaption">いざ制作！</h3><p class="contents">できました。
-とりあえず最低限の機能が完成したのでブログを書いてみたのがこの記事です。
-
-作ってみてわかった事
-</p><h4>やっぱり広く使われてるジェネレーターやサービスはすごい！</h4><p class="contents">だけど自分で自由にカスタマイズできるのはやっぱり楽しいのでよしとします。
-
-
-</p><blockquote class="twitter-tweet" data-theme="light"><p lang="ja" dir="ltr">ゲームを制作する為の技術共有する為のブログを書く為のエディター機能付き静的サイトジェネレーターをNW.js＋Javascriptで作りました！まだ最低限の機能しかないから"さいきょう"には程遠いけどとりあえずブログ書いてビルドできるとこまで行けたのでOKとします。 <a href="https://t.co/EJs0y1wQK1">pic.twitter.com/EJs0y1wQK1</a></p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1543170128556486659?ref_src=twsrc%5Etfw">July 2, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<p></p></div>
+<p></p><h4>おまけ</h4><p class="contents">おまけでシェア機能とコメント機能も追加しました。
+コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
+ようやく一般的なブログっぽい機能がそろってきました。</p></div>
             </div>
         </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+
+        <a href="../../00030.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/21</span>
+        <span class="i-modified"></span>
+        <div class="i-title">ブログの関連記事表示機能を実装する</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+        <a href="../../00029.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/19</span>
+        <span class="i-modified"></span>
+        <div class="i-title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
+            <span class="material-icons">sell</span>C＃</a></div>
+        </div>
+        </a>
+
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4 id="commentTitle">
+                    <span id="commentIcon" class="material-icons">forum</span>コメント
+                </h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
     </main>
     <footer id="footer">
         <div id="license">

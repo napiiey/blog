@@ -256,14 +256,63 @@ loadBackupData(); //前回編集していたデータを開く
 
 
 
-const reloadThis = function(){
+const reloadThis = function(){ //リロード
     chrome.runtime.reload();
+}
+const buildAll = function(){ //全ビルド
+    const changeDate = function(){
+    description.date = document.getElementById("edit-date").value;
+    preview.document.getElementById("date").innerText = description.date;
+    autoBackupData();
+}
+const changeModified = function(){
+    description.modified = document.getElementById("edit-modified").value;
+    let modifiedString;
+    if(description.modified){
+        modifiedString = description.modified + "更新";
+        preview.document.getElementById("modified").style.visibility="visible";
+    }else{
+        modifiedString = "";
+        preview.document.getElementById("modified").style.visibility="hidden";
+    }
+    preview.document.getElementById("modified").innerText = modifiedString;
+    autoBackupData();
+}
+const changeTitle = function(){
+    description.title = document.getElementById("edit-title").value;
+    preview.document.title = description.title;
+    preview.document.getElementById("title").innerText = description.title;
+    autoBackupData();
+}
+const changeTags = function(){
+    tagString = document.getElementById("edit-tags").value;
+    description.tags = tagString.split(",");
+    let tagBlocks = "";
+    description.tags.forEach(e=>tagBlocks = tagBlocks + '<a href="" class="tagblock link-gray">'
+    +'<span class="material-icons">sell</span>'+e+"</a>")
+    preview.document.getElementById("tags").innerHTML = tagBlocks;
+    autoBackupData();
+}
+let gTimer;
+const inputText = function(){
+    if(gTimer){clearTimeout(gTimer);}
+    gTimer = setTimeout(changeText, 1000);
+}
+const changeText = function(){
+    text = document.getElementById("editor").value;
+    autoBackupText();
+    convertText();
+    buffer.innerHTML = convertedText;
+    prismJs();
+    setTimeout(insertPreview, 100);
+}
+
 }
 const build = function(number){
     load(number);
-    setTimeout(buildThis,1200);
+    setTimeout(buildThis,12);
 }
-const buildThis = function(){
+const buildThis = function(){ //ビルド
     let resultHtml = '<!DOCTYPE html>\n' + preview.document.documentElement.outerHTML;
     resultHtml = resultHtml.replace('</title>','</title>\n    <base href="nwjs/src/">');
     resultHtml = resultHtml.replace('<!-- <script src="js/blog.js" defer></script> -->','<script src="js/blog.js" defer></script>');
@@ -405,7 +454,7 @@ const objectToJsString = function(obj){
 }
 
 
-const createNew = function(){
+const createNew = function(){ //新規作成
     const continueConfirm = confirm("変更を破棄して新しい記事を作成します。よろしいですか？");
     if(!continueConfirm){return;}
     description = new Description();
@@ -433,7 +482,7 @@ const saveDescriptions = function(){
     const descriptionJson = JSON.stringify(descriptions);
     fs.writeFileSync("src/data/database.json", descriptionJson);
 }
-const saveThis = function(){
+const saveThis = function(){ //セーブ
     save(description.number);
 }
 
@@ -445,7 +494,7 @@ const saveThis = function(){
 
 //FileList
 
-const openFileList = function(){
+const openFileList = function(){ //ファイル
     document.getElementById("filelist-cancel").style.display="block";
     document.getElementById("filelist-bg").style.display="block";
     let fileBlock = "";
@@ -476,35 +525,35 @@ const openFileList = function(){
     });
     document.getElementById("filelist").innerHTML = result;
 }
-const changeListTitle = function(number, classNum){
+const changeListTitle = function(number, classNum){ //ファイルリスト>>タイトル
     const elements = document.getElementsByClassName("filetitle");
     const result = elements[elements.length - classNum].value;
     descriptions[number].title = result;
     saveDescriptions();
 }
-const changeListTags = function(number, classNum){
+const changeListTags = function(number, classNum){ //ファイルリスト>>タグ
     const elements = document.getElementsByClassName("filetags");
     const result = elements[elements.length - classNum].value;
     descriptions[number].tags = result;
     saveDescriptions();
 }
-const changeListDate = function(number, classNum){
+const changeListDate = function(number, classNum){ //ファイルリスト>>date
     const elements = document.getElementsByClassName("filedate");
     const result = elements[elements.length - classNum].value;
     descriptions[number].date = result;
     saveDescriptions();
 }
-const changeListModified = function(number, classNum){
+const changeListModified = function(number, classNum){ //ファイルリスト>>modified
     const elements = document.getElementsByClassName("filemodified");
     const result = elements[elements.length - classNum].value;
     descriptions[number].modified = result;
     saveDescriptions();
 }
-const editCommand = function(number){
+const editCommand = function(number){ //ファイルリスト>>編集
     load(number);
     cancelFileList();
 }
-const publicCommand = function(number){
+const publicCommand = function(number){ //ファイルリスト>>公開
     if(descriptions[number].public){
         descriptions[number].public = 0;
         try {
@@ -517,7 +566,7 @@ const publicCommand = function(number){
     saveDescriptions();
     openFileList();
 }
-const deleteCommand = function(number){
+const deleteCommand = function(number){ //ファイルリスト>>削除
     const continueConfirm = confirm("データを完全に削除します。よろしいですか？");
     if(!continueConfirm){return}
     descriptions[number] = null;

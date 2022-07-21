@@ -484,7 +484,7 @@ img {
 }
 #relatedpagesicon {
     font-size: 34px;
-    margin-right: 10px;
+    margin-right: 14px;
 }
 
 #commentArea{
@@ -526,6 +526,13 @@ img {
 }
 #commentArea input:hover{
     background-color: #f398ca;
+}
+#commentTitle {
+    display: flex;
+}
+#commentIcon {
+    font-size: 34px;
+    margin-right: 10px;
 }
 .comment-number{
     font-size: 20px;

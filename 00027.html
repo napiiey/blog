@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
     <meta charset="utf-8">
-    <title>ブログタイトル決定！</title>
+    <title>静的サイトジェネレーターつきブログエディターを作ってみた1</title>
     <base href="nwjs/src/">
     <!-- Google Tag Manager -->
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -13,8 +13,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
     <link rel="stylesheet" href="css/blog.css">
-    <script src="js/blog.js" defer=""></script>
-    <!-- <script src="js/prism.js" defer></script> -->
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/blog.js" defer></script>
+        <meta property="og:title" content="ブログタイトル決定！">
+    <meta property="og:description" content="ブログに最低限の機能しか実装していなかったので各機能を実装していきます。理想の関連記事表示内容の続いている次の記事は一番上に表示したい。次いで同じタグが多い記事。その中で日数の近い記事から表示。この…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="ブログタイトル決定！"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -32,6 +42,8 @@
 <option>javascript</option>
 <option>Web</option>
 <option>雑記</option>
+<option>Unity</option>
+<option>C＃</option>
 
                 </select>
             </div>
@@ -42,23 +54,101 @@
             </div>
         </div>
     </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00029.html
+&text=ブログタイトル決定！"></a>
+    </div>
+    <div id="rightcolumn"></div>
     <main>
         <section>
             <div class="articlehead">
                 <span id="date">2022/7/7</span>
                 <span id="modified" style="visibility: hidden;"></span>
-                <h1 id="title">ブログタイトル決定！</h1>
-                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>雑記</a></div>
+                <h1 id="title">静的サイトジェネレーターつきブログエディターを作ってみた1</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>javascript</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Web</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ブログのタイトルを仮で「なぴぃブログ」にしていたんですが、もうちょっとひねりがあった方がいいかなあって思っていくつか候補を出しアンケートを取ってみる事にしました。
+                <div id="text"><p class="contents">ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
 
-</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ブログのタイトル「なぴぃブログ」だとひねりなさすぎだなあと思って何かつけようと思ってるんですがどれがいいと思いますか？</p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1544910027047444480?ref_src=twsrc%5Etfw">July 7, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p><h3 class="textCaption">理想の関連記事表示</h3><p class="contents"></p><ul><li>内容の続いている次の記事は一番上に表示したい。
+</li><li>次いで同じタグが多い記事。
+</li><li>その中で日数の近い記事から表示。</li></ul>
+この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
 
-接戦の末得票数が一番多かった
-<p></p><h4>「なぴぃブログでいい」に決定しました！</h4><p class="contents">投票してくださった方々ありがとうございました。</p></div>
+<p></p><h3 class="textCaption">どうやって実装するか</h3><p class="contents">後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
+</p><ul><li>タグの一致数と投稿日時によって関連度を計算
+</li><li>関連度によって並び替えて5つ程取り出す</li></ul>
+関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
+
+そして実装できたものがこのページの下に表示されている関連記事になります。
+
+<p></p><h4>おまけ</h4><p class="contents">おまけでシェア機能とコメント機能も追加しました。
+コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
+ようやく一般的なブログっぽい機能がそろってきました。</p></div>
             </div>
         </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+
+        <a href="../../00022.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/7</span>
+        <span class="i-modified"></span>
+        <div class="i-title">静的サイトジェネレーターつきブログエディターを作ってみた1</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+        <a href="../../00029.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/19</span>
+        <span class="i-modified"></span>
+        <div class="i-title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
+            <span class="material-icons">sell</span>C＃</a></div>
+        </div>
+        </a>
+
+        <a href="../../00030.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/21</span>
+        <span class="i-modified"></span>
+        <div class="i-title">ブログの関連記事表示機能を実装する</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4 id="commentTitle">
+                    <span id="commentIcon" class="material-icons">forum</span>コメント
+                </h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
     </main>
     <footer id="footer">
         <div id="license">
