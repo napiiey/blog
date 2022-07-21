@@ -259,58 +259,75 @@ loadBackupData(); //前回編集していたデータを開く
 const reloadThis = function(){ //リロード
     chrome.runtime.reload();
 }
-const buildAll = function(){ //全ビルド
-    const changeDate = function(){
-    description.date = document.getElementById("edit-date").value;
-    preview.document.getElementById("date").innerText = description.date;
-    autoBackupData();
-}
-const changeModified = function(){
-    description.modified = document.getElementById("edit-modified").value;
-    let modifiedString;
-    if(description.modified){
-        modifiedString = description.modified + "更新";
-        preview.document.getElementById("modified").style.visibility="visible";
-    }else{
-        modifiedString = "";
-        preview.document.getElementById("modified").style.visibility="hidden";
-    }
-    preview.document.getElementById("modified").innerText = modifiedString;
-    autoBackupData();
-}
-const changeTitle = function(){
-    description.title = document.getElementById("edit-title").value;
-    preview.document.title = description.title;
-    preview.document.getElementById("title").innerText = description.title;
-    autoBackupData();
-}
-const changeTags = function(){
-    tagString = document.getElementById("edit-tags").value;
-    description.tags = tagString.split(",");
-    let tagBlocks = "";
-    description.tags.forEach(e=>tagBlocks = tagBlocks + '<a href="" class="tagblock link-gray">'
-    +'<span class="material-icons">sell</span>'+e+"</a>")
-    preview.document.getElementById("tags").innerHTML = tagBlocks;
-    autoBackupData();
-}
-let gTimer;
-const inputText = function(){
-    if(gTimer){clearTimeout(gTimer);}
-    gTimer = setTimeout(changeText, 1000);
-}
-const changeText = function(){
-    text = document.getElementById("editor").value;
-    autoBackupText();
-    convertText();
-    buffer.innerHTML = convertedText;
-    prismJs();
-    setTimeout(insertPreview, 100);
-}
+// const buildAll = function(){ //全ビルド
+//     text = fs.readFileSync("src/"+String(fileNum).padStart(5,"0")+".html","utf-8");
+//     // document.getElementById("editor").value = text;
+//     const descriptionsJson = fs.readFileSync("src/data/database.json");
+//     descriptions = JSON.parse(descriptionsJson);
+//     description = {...description, ...descriptions[fileNum]};
+//     updateEditor(fileNum);
+//     setTimeout(changeAll,1000);
+//     console.log(fileNum + "をロードしました",description);
 
+// //changeDate = function(){
+//     description.date = document.getElementById("edit-date").value;
+//     preview.document.getElementById("date").innerText = description.date;
+//     autoBackupData();
+
+// //changeModified = function(){
+//     description.modified = document.getElementById("edit-modified").value;
+//     let modifiedString;
+//     if(description.modified){
+//         modifiedString = description.modified + "更新";
+//         preview.document.getElementById("modified").style.visibility="visible";
+//     }else{
+//         modifiedString = "";
+//         preview.document.getElementById("modified").style.visibility="hidden";
+//     }
+//     preview.document.getElementById("modified").innerText = modifiedString;
+//     autoBackupData();
+
+// //changeTitle = function(){
+//     description.title = document.getElementById("edit-title").value;
+//     preview.document.title = description.title;
+//     preview.document.getElementById("title").innerText = description.title;
+//     autoBackupData();
+
+// //changeTags = function(){
+//     tagString = document.getElementById("edit-tags").value;
+//     description.tags = tagString.split(",");
+//     let tagBlocks = "";
+//     description.tags.forEach(e=>tagBlocks = tagBlocks + '<a href="" class="tagblock link-gray">'
+//     +'<span class="material-icons">sell</span>'+e+"</a>")
+//     preview.document.getElementById("tags").innerHTML = tagBlocks;
+//     autoBackupData();
+
+
+// //changeText
+//     // text = document.getElementById("editor").value;
+//     autoBackupText();
+//     convertText();
+//     buffer.innerHTML = convertedText;
+//     prismJs();
+//     setTimeout(insertPreview, 100);
+
+
+// }
+const buildAll = function(){ //全ビルド
+    let count = 0;
+    let  database = descriptions.slice(0,descriptions.length);
+    database = database.filter(e=>e && e.public); //非公開ページを除外
+    const stopKey = setInterval(()=>{
+        build(database[count].number);
+        count++;
+        if(count >= database.length){
+            clearInterval(stopKey);
+        }
+    },2000);
 }
 const build = function(number){
     load(number);
-    setTimeout(buildThis,12);
+    setTimeout(buildThis,1200);
 }
 const buildThis = function(){ //ビルド
     let resultHtml = '<!DOCTYPE html>\n' + preview.document.documentElement.outerHTML;
