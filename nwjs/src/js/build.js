@@ -259,7 +259,7 @@ loadBackupData(); //前回編集していたデータを開く
 const reloadThis = function(){ //リロード
     chrome.runtime.reload();
 }
-// const buildAll = function(){ //全ビルド
+// const buildAll = function(){ //全ビルド 高速なのを作ろうとした残骸
 //     text = fs.readFileSync("src/"+String(fileNum).padStart(5,"0")+".html","utf-8");
 //     // document.getElementById("editor").value = text;
 //     const descriptionsJson = fs.readFileSync("src/data/database.json");
