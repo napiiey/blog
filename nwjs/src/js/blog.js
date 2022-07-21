@@ -124,7 +124,7 @@ function postFormAfter(userId) {
     const user = document.createElement('input');
  
     form.method = 'POST';
-    form.action = 'https://script.google.com/macros/s/AKfycbyBm9qNvz5kDGlEQk0YJr0ibC_ZoIvoAXszHA4ykltQ4cWN77m_cU_3nXbW61NAcDho/exec';
+    form.action = 'https://script.google.com/macros/s/AKfycby8-qxnJqe6aLq7wgZkUigocMPUL4DVHlKwNLwwPPu4IrCPiwkFoeL4uz9hffdcUGNu/exec';
  
     comment.type = 'hidden'; //入力フォームが表示されないように
     comment.name = 'comment';
