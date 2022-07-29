@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <title>【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る</title>
+    <base href="nwjs/src/">
+    <!-- Google Tag Manager -->
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N69M6GF');</script>
+    <!-- End Google Tag Manager -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/blog.js" defer></script>
+        <meta property="og:title" content="【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る">
+    <meta property="og:description" content="Unityでオブジェクトを移動させようとすると以下の3つの方法があります。1.Transform.positionに代入する方法2.Transform.SetPositionAndRotation(…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログでいい</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+<option>javascript</option>
+<option>Web</option>
+<option>雑記</option>
+<option>Unity</option>
+<option>C＃</option>
+
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00031.html
+&text=【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る"></a>
+    </div>
+    <div id="rightcolumn"></div>
+    <main>
+        <section>
+            <div class="articlehead">
+                <span id="date">2022/7/29</span>
+                <span id="modified" style="visibility: hidden;"></span>
+                <h1 id="title">【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C＃</a></div>
+            </div>
+            <div id="textouter">
+                <div id="text"><p class="contents">Unityでオブジェクトを移動させようとすると以下の3つの方法があります。
+1.Transform.positionに代入する方法
+2.Transform.SetPositionAndRotation()メソッドを使う方法
+3.Transform.Translate()メソッドを使う方法
+
+X座標を50に移動し、Y座標とZ座標は変えたくない場合は1のTransform.positionに代入する方法を使う事になると思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">transform<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">50.0f</span><span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p class="contents">
+もしくは
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token class-name">Vector3</span> pos <span class="token operator">=</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">;</span>
+pos<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">50.0f</span><span class="token punctuation">;</span>
+transform<span class="token punctuation">.</span>position <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p class="contents">
+position.xに直接代入ができない為どうしてもややこしくなってしまします。
+
+最初のパターンであれば1行だしそこまで悪くないような気がします。しかしTransformの変数名が titleCursorTransform で、ローカル座標を使いたい場合はどうでしょう。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">titleCursorTransform<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>
+    <span class="token number">50.0f</span><span class="token punctuation">,</span>
+    titleCursorTransform<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span>
+    titleCursorTransform<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+かなり長くなりコードの見通しが悪くなってしまいます。
+
+</p><h3 class="textCaption">座標をX,Y,Z個別に設定して移動する拡張メソッドを作る</h3><p class="contents">今回はこの問題をC#の拡張メソッドを使って解決しようと思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">namespace</span> <span class="token namespace">UnityEngine</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Extensions</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+UnityEngineのTransformを拡張したいので、まずUnityEngineのnamespaceに拡張メソッド用の静的クラスを宣言します。
+そしてその中に静的メソッドを定義します。
+
+this引数をつけた変数の型にメソッドが追加され、その引数として大元のtransform.positionが呼び出せるようになります。（privateメンバにはアクセスできない事に注意！）
+
+</p><h4>使い方</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">titleCursorTransform<span class="token punctuation">.</span><span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token number">50.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p class="contents">
+これだけでX座標のみを変更し移動できるようになりました。
+記述も短くやってる事もとてもわかりやすくなりました。
+</p></div>
+            </div>
+        </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+
+        <a href="../../00029.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/19</span>
+        <span class="i-modified"></span>
+        <div class="i-title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
+            <span class="material-icons">sell</span>C＃</a></div>
+        </div>
+        </a>
+
+        <a href="../../00028.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/18</span>
+        <span class="i-modified"></span>
+        <div class="i-title">TextMeshPro フォントAtlas作成のコツ</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a></div>
+        </div>
+        </a>
+
+        <a href="../../00030.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/21</span>
+        <span class="i-modified"></span>
+        <div class="i-title">ブログの関連記事表示機能を実装する</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+        <a href="../../00022.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/7</span>
+        <span class="i-modified"></span>
+        <div class="i-title">静的サイトジェネレーターつきブログエディターを作ってみた1</div>
+        <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
+            <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Web</a></div>
+        </div>
+        </a>
+
+        <a href="../../00027.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/7/7</span>
+        <span class="i-modified"></span>
+        <div class="i-title">ブログタイトル決定！</div>
+        <div class="i-tags"><a href="../../index.html?tag=雑記" class="tagblock link-gray">
+            <span class="material-icons">sell</span>雑記</a></div>
+        </div>
+        </a>
+
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4 id="commentTitle">
+                    <span id="commentIcon" class="material-icons">forum</span>コメント
+                </h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
+    </main>
+    <footer id="footer">
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>
