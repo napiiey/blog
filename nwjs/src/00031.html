@@ -49,3 +49,29 @@ titleCursorTransform.SetLocalX(50.0f);
 ```
 これだけでX座標のみを変更し移動できるようになりました。
 記述も短くやってる事もとてもわかりやすくなりました。
+
+他のパターンも用意
+```cs
+namespace UnityEngine {
+    static class Extensions {
+        public static void SetX(this Transform self, float value) {
+            self.position = new Vector3(value, self.position.y, self.position.z);
+        }
+        public static void SetY(this Transform self, float value) {
+            self.position = new Vector3(self.position.x, value, self.position.z);
+        }
+        public static void SetZ(this Transform self, float value) {
+            self.position = new Vector3(self.position.x, self.position.y, value);
+        }
+        public static void SetLocalX(this Transform self, float value) {
+            self.localPosition = new Vector3(value, self.localPosition.y, self.localPosition.z);
+        }
+        public static void SetLocalY(this Transform self, float value) {
+            self.localPosition = new Vector3(self.localPosition.x, value, self.localPosition.z);
+        }
+        public static void SetLocalZ(this Transform self, float value) {
+            self.localPosition = new Vector3(self.localPosition.x, self.localPosition.y, value);
+        }
+    }
+}
+```
