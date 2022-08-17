@@ -1,0 +1,25 @@
+Unity C# にはいろいろな時間計測方法があります。
+今回はその中でよく使っていた4つを並べて走らせて検証してみました。
+
+###複数並べて走らせて検証してみた
+<img src="image/f32745d9c20b8454194ce9df0f86a5e3.png">
+上から順に
+・UnityのUpdate()＋Time.deltaTime
+・UniTaskのDelayFrame＋Time.deltaTime
+・UniTaskのDelay(1000)
+・DateTimeでTimeSpanを取ったもの
+####DateTime
+恐らく一番誤差の少ないのはDateTime。
+日時を扱う為のものなので誤差の蓄積は少ないはずです。
+ただしカウントに使うには処理が重いです。
+####Time.deltaTime
+そこに迫るのはTime.deltaTimeを使った2つでした。
+Unityのアップデート関数とUniTask.DelayFrame( 1 ) はぴったり一致するようです。
+####UniTask.Delay
+UniTask.Delay( 1000 ) で1000ミリ秒ずつ加算していったものは結構なずれがでてしまいました。ミリ秒単位で正確なイメージがあったので意外でした。
+調べてみるとTask.Delay自体の精度があまり高くないみたいです。
+
+###結論
+Time.deltaTimeを使ってカウントしつつ、つどつどDateTimeやサーバー時間を取得してつじつまを合わせていくのが現実的かも？
+
+他にいい方法があったらコメント欄で教えてください。

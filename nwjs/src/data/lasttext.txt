@@ -1,77 +1,20 @@
-Unityでオブジェクトを移動させようとすると以下の3つの方法があります。
-1.Transform.positionに代入する方法
-2.Transform.SetPositionAndRotation()メソッドを使う方法
-3.Transform.Translate()メソッドを使う方法
+ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
 
-X座標を50に移動し、Y座標とZ座標は変えたくない場合は1のTransform.positionに代入する方法を使う事になると思います。
-コードは以下のようになります。
-```cs
-transform.position = new Vector3(50.0f, transform.position.y, transform.position.z);
-```
-もしくは
-```cs
-Vector3 pos = transform.position;
-pos.x = 50.0f;
-transform.position = pos;
-```
-position.xに直接代入ができない為どうしてもややこしくなってしまします。
+###理想の関連記事表示
+・内容の続いている次の記事は一番上に表示したい。
+・次いで同じタグが多い記事。
+・その中で日数の近い記事から表示。
+この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
 
-最初のパターンであれば1行だしそこまで悪くないような気がします。しかしTransformの変数名が titleCursorTransform で、ローカル座標を使いたい場合はどうでしょう。
-```cs
-titleCursorTransform.localPosition = new Vector3(
-    50.0f,
-    titleCursorTransform.localPosition.y,
-    titleCursorTransform.localPosition.z
-    );
-```
-かなり長くなりコードの見通しが悪くなってしまいます。
+###どうやって実装するか
+後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
+・タグの一致数と投稿日時によって関連度を計算
+・関連度によって並び替えて5つ程取り出す
+関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
 
-###座標をX,Y,Z個別に設定して移動する拡張メソッドを作る
-今回はこの問題をC#の拡張メソッドを使って解決しようと思います。
-コードは以下のようになります。
-```cs
-namespace UnityEngine {
-    static class Extensions {
-        public static void SetLocalX(this Transform self, float value) {
-            self.localPosition = new Vector3(value, self.localPosition.y, self.localPosition.z);
-        }
-    }
-}
-```
-UnityEngineのTransformを拡張したいので、まずUnityEngineのnamespaceに拡張メソッド用の静的クラスを宣言します。
-そしてその中に静的メソッドを定義します。
+そして実装できたものがこのページの下に表示されている関連記事になります。
 
-this引数をつけた変数の型にメソッドが追加され、その引数として大元のtransform.positionが呼び出せるようになります。（privateメンバにはアクセスできない事に注意！）
-
-####使い方
-```cs
-titleCursorTransform.SetLocalX(50.0f);
-```
-これだけでX座標のみを変更し移動できるようになりました。
-記述も短くやってる事もとてもわかりやすくなりました。
-
-他のパターンも用意
-```cs
-namespace UnityEngine {
-    static class Extensions {
-        public static void SetX(this Transform self, float value) {
-            self.position = new Vector3(value, self.position.y, self.position.z);
-        }
-        public static void SetY(this Transform self, float value) {
-            self.position = new Vector3(self.position.x, value, self.position.z);
-        }
-        public static void SetZ(this Transform self, float value) {
-            self.position = new Vector3(self.position.x, self.position.y, value);
-        }
-        public static void SetLocalX(this Transform self, float value) {
-            self.localPosition = new Vector3(value, self.localPosition.y, self.localPosition.z);
-        }
-        public static void SetLocalY(this Transform self, float value) {
-            self.localPosition = new Vector3(self.localPosition.x, value, self.localPosition.z);
-        }
-        public static void SetLocalZ(this Transform self, float value) {
-            self.localPosition = new Vector3(self.localPosition.x, self.localPosition.y, value);
-        }
-    }
-}
-```
+####おまけ
+おまけでシェア機能とコメント機能も追加しました。
+コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
+ようやく一般的なブログっぽい機能がそろってきました。

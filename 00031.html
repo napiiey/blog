@@ -112,7 +112,31 @@ this引数をつけた変数の型にメソッドが追加され、その引数�
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p class="contents">
 これだけでX座標のみを変更し移動できるようになりました。
 記述も短くやってる事もとてもわかりやすくなりました。
-</p></div>
+
+他のパターンも用意
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">namespace</span> <span class="token namespace">UnityEngine</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Extensions</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetY</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetZ</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalY</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalZ</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents"></p></div>
             </div>
         </section>
         <div id="credit-back">
@@ -137,6 +161,17 @@ this引数をつけた変数の型にメソッドが追加され、その引数�
         <span class="i-date">2022/7/19</span>
         <span class="i-modified"></span>
         <div class="i-title">【Unity】デバッグログでオブジェクトの中身を一覧表示する</div>
+        <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
+            <span class="material-icons">sell</span>C＃</a></div>
+        </div>
+        </a>
+
+        <a href="../../00032.html">
+        <div class="i-articlehead">
+        <span class="i-date">2022/8/17</span>
+        <span class="i-modified"></span>
+        <div class="i-title">【Unity】時間の計測には結局何を使えばいいのか</div>
         <div class="i-tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
             <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
             <span class="material-icons">sell</span>C＃</a></div>
@@ -172,16 +207,6 @@ this引数をつけた変数の型にメソッドが追加され、その引数�
         <div class="i-tags"><a href="../../index.html?tag=javascript" class="tagblock link-gray">
             <span class="material-icons">sell</span>javascript</a><a href="../../index.html?tag=Web" class="tagblock link-gray">
             <span class="material-icons">sell</span>Web</a></div>
-        </div>
-        </a>
-
-        <a href="../../00027.html">
-        <div class="i-articlehead">
-        <span class="i-date">2022/7/7</span>
-        <span class="i-modified"></span>
-        <div class="i-title">ブログタイトル決定！</div>
-        <div class="i-tags"><a href="../../index.html?tag=雑記" class="tagblock link-gray">
-            <span class="material-icons">sell</span>雑記</a></div>
         </div>
         </a>
 
