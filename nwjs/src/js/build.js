@@ -367,7 +367,6 @@ const buildThis = function(){ //ビルド
     buildTopPage();
 }
 function escapeUnsafeText(unsafeText){
-    console.log(unsafeText);
     return unsafeText.replace(
         /[&'`"<>\#]/g, 
         function(match) {
@@ -378,7 +377,7 @@ function escapeUnsafeText(unsafeText){
             '"': '&quot;',
             '<': '&lt;',
             '>': '&gt;',
-            '#': '&#035;',
+            '#': '&23;',
             }[match]
         }
     );
