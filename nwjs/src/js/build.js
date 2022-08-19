@@ -339,7 +339,7 @@ const buildThis = function(){ //ビルド
     resultHtml = resultHtml.replace('<option>全てのタグ</option>', '<option>全てのタグ</option>\n' + allTagsHtml);
     resultHtml = resultHtml.replace('<a id="twittershare" href=""></a>', 
     `<a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/${String(description.number).padStart(5,"0")}.html
-&text=${description.title}"></a>`);
+&text=${escapeUnsafeText(description.title)}"></a>`);
     let descriptionText = preview.document.getElementById("text").innerText;
     descriptionText = descriptionText.slice(0,200);
     descriptionText = descriptionText.replace(/\s+/g,"");
@@ -365,6 +365,23 @@ const buildThis = function(){ //ビルド
     console.log(description.number + "のビルドが完了しました");
 
     buildTopPage();
+}
+function escapeUnsafeText(unsafeText){
+    console.log(unsafeText);
+    return unsafeText.replace(
+        /[&'`"<>\#]/g, 
+        function(match) {
+            return {
+            '&': '&amp;',
+            "'": '&#x27;',
+            '`': '&#x60;',
+            '"': '&quot;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '#': '&#035;',
+            }[match]
+        }
+    );
 }
 const makeRelatedPages = function(){
     let articleHeads = "";
