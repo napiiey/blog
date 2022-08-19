@@ -377,7 +377,7 @@ function escapeUnsafeText(unsafeText){
             '"': '&quot;',
             '<': '&lt;',
             '>': '&gt;',
-            '#': '&23;',
+            '#': '%23;',
             }[match]
         }
     );
