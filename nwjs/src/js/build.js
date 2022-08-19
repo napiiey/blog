@@ -144,7 +144,8 @@ const convertMarks = function(letter, endLetter, startTag, endTag){
         const indexCount = condition;
         const indexCountEnd = convertedText.indexOf(endLetter,indexCount+letter.length);
         const h3Before = convertedText.slice(0,indexCount);
-        const h3Core = convertedText.slice(indexCount+letter.length+1,indexCountEnd);
+        let h3Core = convertedText.slice(indexCount+letter.length+1,indexCountEnd);
+        h3Core = escapeUnsafeText(h3Core);
         const h3After = convertedText.slice(indexCountEnd+endLetter.length);
         convertedText = h3Before+pEnd+startTag+h3Core+endTag+pStart+h3After;
     };

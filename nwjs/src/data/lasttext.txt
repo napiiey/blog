@@ -57,13 +57,13 @@ C#は配列のような組み込み型にもメソッド追加したりできる
 ```cs
 public static class ArrayExtension {
 
-    public static void ForEach&lt;T>(this T[] array, Action&lt;T> action) {
+    public static void ForEach<T>(this T[] array, Action<T> action) {
         for (int i = 0; i < array.Length; i++) {
             action.Invoke(array[i]);
         }
     }
 
-    public static void ForEach&lt;T>(this T[] array, Action&lt;T, int> action) {
+    public static void ForEach<T>(this T[] array, Action<T, int> action) {
         for (int i = 0; i < array.Length; i++) {
             action.Invoke(array[i], i);
         }

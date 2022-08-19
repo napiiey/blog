@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="【Unity】時間の計測には結局何を使えばいいのか">
-    <meta property="og:description" content="UnityC#にはいろいろな時間計測方法があります。今回はその中でよく使っていた4つを並べて走らせて検証してみました。複数並べて走らせて検証してみた上から順にUnityのUpdate()＋Time.…">
+    <meta property="og:description" content="Unityでオブジェクトを移動させようとすると以下の3つの方法があります。1.Transform.positionに代入する方法2.Transform.SetPositionAndRotation(…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -68,26 +68,75 @@
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C＃</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">Unity C# にはいろいろな時間計測方法があります。
-今回はその中でよく使っていた4つを並べて走らせて検証してみました。
+                <div id="text"><p class="contents">Unityでオブジェクトを移動させようとすると以下の3つの方法があります。
+1.Transform.positionに代入する方法
+2.Transform.SetPositionAndRotation()メソッドを使う方法
+3.Transform.Translate()メソッドを使う方法
 
-</p><h3 class="textCaption">複数並べて走らせて検証してみた</h3><p class="contents"><img src="image/f32745d9c20b8454194ce9df0f86a5e3.png">
-上から順に
-</p><ul><li>UnityのUpdate()＋Time.deltaTime
-</li><li>UniTaskのDelayFrame＋Time.deltaTime
-</li><li>UniTaskのDelay(1000)
-</li><li>DateTimeでTimeSpanを取ったもの</li></ul>
-<p></p><h4>DateTime</h4><p class="contents">恐らく一番誤差の少ないのはDateTime。
-日時を扱う為のものなので誤差の蓄積は少ないはずです。
-ただしカウントに使うには処理が重いです。
-</p><h4>Time.deltaTime</h4><p class="contents">そこに迫るのはTime.deltaTimeを使った2つでした。
-Unityのアップデート関数とUniTask.DelayFrame( 1 ) はぴったり一致するようです。
-</p><h4>UniTask.Delay</h4><p class="contents">UniTask.Delay( 1000 ) で1000ミリ秒ずつ加算していったものは結構なずれがでてしまいました。ミリ秒単位で正確なイメージがあったので意外でした。
-調べてみるとTask.Delay自体の精度があまり高くないみたいです。
+X座標を50に移動し、Y座標とZ座標は変えたくない場合は1のTransform.positionに代入する方法を使う事になると思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code"><code class="language-cs">transform.position = new Vector3(50.0f, transform.position.y, transform.position.z);
+</code></pre><p class="contents">
+もしくは
+</p><pre class="line-numbers code"><code class="language-cs">Vector3 pos = transform.position;
+pos.x = 50.0f;
+transform.position = pos;
+</code></pre><p class="contents">
+position.xに直接代入ができない為どうしてもややこしくなってしまします。
 
-</p><h3 class="textCaption">結論</h3><p class="contents">Time.deltaTimeを使ってカウントしつつ、つどつどDateTimeやサーバー時間を取得してつじつまを合わせていくのが現実的かも？
+最初のパターンであれば1行だしそこまで悪くないような気がします。しかしTransformの変数名が titleCursorTransform で、ローカル座標を使いたい場合はどうでしょう。
+</p><pre class="line-numbers code"><code class="language-cs">titleCursorTransform.localPosition = new Vector3(
+    50.0f,
+    titleCursorTransform.localPosition.y,
+    titleCursorTransform.localPosition.z
+    );
+</code></pre><p class="contents">
+かなり長くなりコードの見通しが悪くなってしまいます。
 
-他にいい方法があったらコメント欄で教えてください。</p></div>
+</p><h3 class="textCaption">座標をX,Y,Z個別に設定して移動する拡張メソッドを作る</h3><p class="contents">今回はこの問題をC#の拡張メソッドを使って解決しようと思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code"><code class="language-cs">namespace UnityEngine {
+    static class Extensions {
+        public static void SetLocalX(this Transform self, float value) {
+            self.localPosition = new Vector3(value, self.localPosition.y, self.localPosition.z);
+        }
+    }
+}
+</code></pre><p class="contents">
+UnityEngineのTransformを拡張したいので、まずUnityEngineのnamespaceに拡張メソッド用の静的クラスを宣言します。
+そしてその中に静的メソッドを定義します。
+
+this引数をつけた変数の型にメソッドが追加され、その引数として大元のtransform.positionが呼び出せるようになります。（privateメンバにはアクセスできない事に注意！）
+
+</p><h4>使い方</h4><p class="contents"></p><pre class="line-numbers code"><code class="language-cs">titleCursorTransform.SetLocalX(50.0f);
+</code></pre><p class="contents">
+これだけでX座標のみを変更し移動できるようになりました。
+記述も短くやってる事もとてもわかりやすくなりました。
+
+他のパターンも用意
+</p><pre class="line-numbers code"><code class="language-cs">namespace UnityEngine {
+    static class Extensions {
+        public static void SetX(this Transform self, float value) {
+            self.position = new Vector3(value, self.position.y, self.position.z);
+        }
+        public static void SetY(this Transform self, float value) {
+            self.position = new Vector3(self.position.x, value, self.position.z);
+        }
+        public static void SetZ(this Transform self, float value) {
+            self.position = new Vector3(self.position.x, self.position.y, value);
+        }
+        public static void SetLocalX(this Transform self, float value) {
+            self.localPosition = new Vector3(value, self.localPosition.y, self.localPosition.z);
+        }
+        public static void SetLocalY(this Transform self, float value) {
+            self.localPosition = new Vector3(self.localPosition.x, value, self.localPosition.z);
+        }
+        public static void SetLocalZ(this Transform self, float value) {
+            self.localPosition = new Vector3(self.localPosition.x, self.localPosition.y, value);
+        }
+    }
+}
+</code></pre><p class="contents"></p></div>
             </div>
         </section>
         <div id="credit-back">

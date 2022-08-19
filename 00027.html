@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="ブログタイトル決定！">
-    <meta property="og:description" content="ブログのタイトルを仮で「なぴぃブログ」にしていたんですが、もうちょっとひねりがあった方がいいかなあって思っていくつか候補を出しアンケートを取ってみる事にしました。ブログのタイトル「なぴぃブログ」だと…">
+    <meta property="og:description" content="エディター機能付き静的サイトジェネレーターをJavascript+NW.jsで作ってみました。作ったきっかけゲーム開発の技術ブログでもはじめようかなあと思ってたんですがどう公開するか悩んでました。1…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -68,12 +68,52 @@
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>雑記</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ブログのタイトルを仮で「なぴぃブログ」にしていたんですが、もうちょっとひねりがあった方がいいかなあって思っていくつか候補を出しアンケートを取ってみる事にしました。
+                <div id="text"><p class="contents">エディター機能付き静的サイトジェネレーターをJavascript + NW.jsで作ってみました。
 
-</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ブログのタイトル「なぴぃブログ」だとひねりなさすぎだなあと思って何かつけようと思ってるんですがどれがいいと思いますか？</p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1544910027047444480?ref_src=twsrc%5Etfw">July 7, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p><h3 class="textCaption">作ったきっかけ</h3><p class="contents">ゲーム開発の技術ブログでもはじめようかなあと思ってたんですがどう公開するか悩んでました。
 
-接戦の末得票数が一番多かった
-<p></p><h4>「なぴぃブログでいい」に決定しました！</h4><p class="contents">投票してくださった方々ありがとうございました。</p></div>
+</p><h4>1, オンラインのブログサービスを使う</h4><p class="contents">はてなブログやBlogger、qiita、zenn等
+使いやすさや記事の露出という点ではいい選択だと思います。
+
+しかしながら無料で使えるものはユーザビリティーの低くなるような広告がつくか内容が縛られたりできることが限られる傾向がありました。
+また、無料サービスは突然サービス終了したり有料化したりといった事もよくあります。
+
+</p><h4>2、CMSを使う。</h4><p class="contents">wordpressの公開にはデータベース等が使えるサーバーが必要なためサーバー代がかかります。
+また、静的サイトと比べて少し重めになる傾向があります。
+
+</p><h4>3、静的サイトジェネレーターを使う。</h4><p class="contents">HUGO、Gatsby、Jekyll等
+静的サイトなのでサイトがとても軽いです。
+
+しかしコマンド操作やマークダウンを直接書くのはたまにしか書かないであろう自分の用途には適さない気がしました。
+短い期間書き続ける分には慣れるためとても速く記事を書けるようになると思いますが、期間が空く場合コマンドや記述法を確実に忘れる自身があります。
+
+</p><h4>4、GUI付き静的サイトジェネレーターを使う。</h4><p class="contents">Publii、Gitbook、Catalpa、Phest等
+調べてたらGUI付きの静的サイトジェネレーターというものもあるようでした。かなり理想に近いものもありそうでしたがここまで来ると欲がでてしまいます。
+
+</p><h3 class="textCaption">ほしい機能</h3><p class="contents">
+</p><ul><li>GitHubPages等無料のホスティングサービスを使いたいためCMSではなく静的サイトジェネレーターで。
+</li><li>操作はすべてGUIでできるようにする。
+</li><li>欲を言うなら自分で使いやすくカスタマイズできるエディター付きで。
+</li><li>コードが汚れるのが嫌なのでエディターはWYSWYGではなくマークダウンで。なおかつHTMLも使えるようにしたい。
+</li><li>マークダウンはGUIコンテキストメニューで簡単に挿入できるようにしたい。
+</li><li>基本はHugo等でも使われるマークダウンだけど見やすさ重視で日本語入力でも入力しやすい独自マークダウンも導入したい。
+</li><li>エディターではテキストとして入力したいが作りこみたい時はVSCodeでタグを打てるようにしたいのでビルド元のデータはHTMLファイルで。
+</li><li>見た目を確認するビュアーはサイズをいろいろ変えて見たいので別ウィンドウがいい。
+</li><li>VSCodeのように保存していないデータも自動でバックアップを取りたい。</li></ul>
+
+<p></p><h3 class="textCaption">何でつくるか</h3><p class="contents">いろいろ新しい技術に挑戦してみたくはあったんですが、ほとんどがHTMLのDOM操作的な内容になってくるためHTMLと親和性の高いJavascriptで全部作る事にしました。
+
+プラットフォームはシンプルにWebサイトをデスクトップアプリとして表示する事が得意なNW.jsにしました。
+
+</p><h3 class="textCaption">いざ制作！</h3><p class="contents">できました。
+とりあえず最低限の機能が完成したのでブログを書いてみたのがこの記事です。
+
+作ってみてわかった事
+</p><h4>やっぱり広く使われてるジェネレーターやサービスはすごい！</h4><p class="contents">だけど自分で自由にカスタマイズできるのはやっぱり楽しいのでよしとします。
+
+
+</p><blockquote class="twitter-tweet" data-theme="light"><p lang="ja" dir="ltr">ゲームを制作する為の技術共有する為のブログを書く為のエディター機能付き静的サイトジェネレーターをNW.js＋Javascriptで作りました！まだ最低限の機能しかないから"さいきょう"には程遠いけどとりあえずブログ書いてビルドできるとこまで行けたのでOKとします。 <a href="https://t.co/EJs0y1wQK1">pic.twitter.com/EJs0y1wQK1</a></p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1543170128556486659?ref_src=twsrc%5Etfw">July 2, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p></p></div>
             </div>
         </section>
         <div id="credit-back">

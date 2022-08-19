@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="ブログの関連記事表示機能を実装する">
-    <meta property="og:description" content="ブログに最低限の機能しか実装していなかったので各機能を実装していきます。理想の関連記事表示内容の続いている次の記事は一番上に表示したい。次いで同じタグが多い記事。その中で日数の近い記事から表示。この…">
+    <meta property="og:description" content="UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。JavascriptでChromeDevtoolsに慣れ親しんだ身としては中…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -68,23 +68,50 @@
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>javascript</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Web</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
+                <div id="text"><p class="contents">UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。Javascriptで Chrome Devtools に慣れ親しんだ身としては中身を全て確認させてくれー！と思ってしまいます。
 
-</p><h3 class="textCaption">理想の関連記事表示</h3><p class="contents"></p><ul><li>内容の続いている次の記事は一番上に表示したい。
-</li><li>次いで同じタグが多い記事。
-</li><li>その中で日数の近い記事から表示。</li></ul>
-この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
+</p><h4>とりあえず調べてみた</h4><p class="contents">いい方法がないかざっくり調べたところ、配列をjoinメソッドで連結して表示する方法がひっかかりました。でもこれでは型毎に文字列変換しなければならないので何かいい方法がないか考えてみました。
 
-<p></p><h3 class="textCaption">どうやって実装するか</h3><p class="contents">後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
-</p><ul><li>タグの一致数と投稿日時によって関連度を計算
-</li><li>関連度によって並び替えて5つ程取り出す</li></ul>
-関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
+</p><h3 class="textCaption">JSON文字列化してログ表示するメソッドを作る</h3><p class="contents">JSON化すれば中身を一覧表示できるじゃないかと思って試してみました。
+</p><pre class="line-numbers code"><code class="language-cs">using Newtonsoft.Json;
 
-そして実装できたものがこのページの下に表示されている関連記事になります。
+namespace UnityEngine{
+    public static class DeepLog{
+        public static void Log(object obj){
+            var jsonText = JsonConvert.SerializeObject(obj); //JSON化
+            string type = obj.GetType().ToString(); //型表示
+            type = type.Replace("System.","");
+            Debug.Log($"&amp;lt;color=yellow&gt;{jsonText}&amp;lt;/color&gt;   &amp;lt;color=%23;888888&gt; ({type})&amp;lt;/color&gt;"); //色をつけて表示
+        }
+    }
+}
+</code></pre><p class="contents">
+このメソッドを使って以下の5つの型を表示してみます。
+</p><pre class="line-numbers code"><code class="language-cs">    //表示するもの
+    void Start(){
+        DeepLog.Log(77777);
 
-<p></p><h4>おまけ</h4><p class="contents">おまけでシェア機能とコメント機能も追加しました。
-コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
-ようやく一般的なブログっぽい機能がそろってきました。</p></div>
+        DeepLog.Log("あいうえお");
+
+        string[] test1 = new string[3] {"tes1","tes2","tes3"};
+        DeepLog.Log(test1);
+
+        int[] test2 = new int[3] {1,2,3};
+        DeepLog.Log(test2);
+
+        RoomData room = new RoomData();
+        DeepLog.Log(room); //自作クラス
+    }
+</code></pre><p class="contents">
+実行！
+<img src="image/be64c5bb41bbe7bb845d4eb679598307.png">
+上手くいきました。
+
+JSON化に関してパフォーマンス的にはSystem.Text.Jsonの方がいいみたいですが対応している型が多いらしいという事でNewtonsoft.Jsonを使用しました。
+
+Chrome devtools のように展開したりはできませんが、とりあえずUnityで手軽にオブジェクトの中身が表示できるようになりました。
+
+</p></div>
             </div>
         </section>
         <div id="credit-back">
