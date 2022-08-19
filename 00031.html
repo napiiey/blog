@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="【Unity】座標をX,Y,Z個別に設定して移動する拡張メソッドを作る">
-    <meta property="og:description" content="ブログに最低限の機能しか実装していなかったので各機能を実装していきます。理想の関連記事表示内容の続いている次の記事は一番上に表示したい。次いで同じタグが多い記事。その中で日数の近い記事から表示。この…">
+    <meta property="og:description" content="Unityでオブジェクトを移動させようとすると以下の3つの方法があります。1.Transform.positionに代入する方法2.Transform.SetPositionAndRotation(…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -68,23 +68,75 @@
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>C＃</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ブログに最低限の機能しか実装していなかったので各機能を実装していきます。
+                <div id="text"><p class="contents">Unityでオブジェクトを移動させようとすると以下の3つの方法があります。
+1.Transform.positionに代入する方法
+2.Transform.SetPositionAndRotation()メソッドを使う方法
+3.Transform.Translate()メソッドを使う方法
 
-</p><h3 class="textCaption">理想の関連記事表示</h3><p class="contents"></p><ul><li>内容の続いている次の記事は一番上に表示したい。
-</li><li>次いで同じタグが多い記事。
-</li><li>その中で日数の近い記事から表示。</li></ul>
-この条件で関連記事を表示できれば同じタグの記事がこれだけですべて廻れるようになるはずです。
+X座標を50に移動し、Y座標とZ座標は変えたくない場合は1のTransform.positionに代入する方法を使う事になると思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">transform<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">50.0f</span><span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p class="contents">
+もしくは
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token class-name">Vector3</span> pos <span class="token operator">=</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">;</span>
+pos<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">50.0f</span><span class="token punctuation">;</span>
+transform<span class="token punctuation">.</span>position <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p class="contents">
+position.xに直接代入ができない為どうしてもややこしくなってしまします。
 
-<p></p><h3 class="textCaption">どうやって実装するか</h3><p class="contents">後々のサイトの負荷等も考えて以前作った静的サイトジェネレーターのビルド時に関連度を計算してあらかじめ生成しておく事にしました。
-</p><ul><li>タグの一致数と投稿日時によって関連度を計算
-</li><li>関連度によって並び替えて5つ程取り出す</li></ul>
-関連度の計算はタグの一致数を最優先にし、日数に関しては次の記事が上にきやすいように同じぐらいの日数の場合は新しい記事を優先に表示するようにしました。
+最初のパターンであれば1行だしそこまで悪くないような気がします。しかしTransformの変数名が titleCursorTransform で、ローカル座標を使いたい場合はどうでしょう。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">titleCursorTransform<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>
+    <span class="token number">50.0f</span><span class="token punctuation">,</span>
+    titleCursorTransform<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span>
+    titleCursorTransform<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+かなり長くなりコードの見通しが悪くなってしまいます。
 
-そして実装できたものがこのページの下に表示されている関連記事になります。
+</p><h3 class="textCaption">座標をX,Y,Z個別に設定して移動する拡張メソッドを作る</h3><p class="contents">今回はこの問題をC#の拡張メソッドを使って解決しようと思います。
+コードは以下のようになります。
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">namespace</span> <span class="token namespace">UnityEngine</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Extensions</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
+UnityEngineのTransformを拡張したいので、まずUnityEngineのnamespaceに拡張メソッド用の静的クラスを宣言します。
+そしてその中に静的メソッドを定義します。
 
-<p></p><h4>おまけ</h4><p class="contents">おまけでシェア機能とコメント機能も追加しました。
-コメント機能は以前のプラグイン公開サイト用に作ったものを流用しました。
-ようやく一般的なブログっぽい機能がそろってきました。</p></div>
+this引数をつけた変数の型にメソッドが追加され、その引数として大元のtransform.positionが呼び出せるようになります。（privateメンバにはアクセスできない事に注意！）
+
+</p><h4>使い方</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">titleCursorTransform<span class="token punctuation">.</span><span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token number">50.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p class="contents">
+これだけでX座標のみを変更し移動できるようになりました。
+記述も短くやってる事もとてもわかりやすくなりました。
+
+他のパターンも用意
+</p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">namespace</span> <span class="token namespace">UnityEngine</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Extensions</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetY</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetZ</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>position <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalX</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span><span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalY</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">SetLocalZ</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">Transform</span> self<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">float</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            self<span class="token punctuation">.</span>localPosition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Vector3</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>localPosition<span class="token punctuation">.</span>y<span class="token punctuation">,</span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents"></p></div>
             </div>
         </section>
         <div id="credit-back">

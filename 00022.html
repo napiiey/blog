@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="静的サイトジェネレーターつきブログエディターを作ってみた1">
-    <meta property="og:description" content="C#で配列をループする時は基本的にはfor文かforeach文を使うのですがJavascriptのforEachメソッドに慣れた身としてはあれを使いたくて発狂する事があります。例えばこんな時ですfo…">
+    <meta property="og:description" content="エディター機能付き静的サイトジェネレーターをJavascript+NW.jsで作ってみました。作ったきっかけゲーム開発の技術ブログでもはじめようかなあと思ってたんですがどう公開するか悩んでました。1…">
     <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -68,93 +68,52 @@
                 <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>javascript</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Web</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">C#で配列をループする時は基本的にはfor文かforeach文を使うのですがJavascriptのforEachメソッドに慣れた身としてはあれを使いたくて発狂する事があります。
+                <div id="text"><p class="contents">エディター機能付き静的サイトジェネレーターをJavascript + NW.jsで作ってみました。
 
-例えばこんな時です
-</p><h4>for文の場合</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">        <span class="token class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> audioSourceVolume <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">{</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> <span class="token number">0.7f</span><span class="token punctuation">,</span> <span class="token number">0.3f</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</p><h3 class="textCaption">作ったきっかけ</h3><p class="contents">ゲーム開発の技術ブログでもはじめようかなあと思ってたんですがどう公開するか悩んでました。
 
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> audioSourceVolume<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"ch</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">i</span><span class="token punctuation">}</span></span><span class="token string">のボリュームは</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">audioSourceVolume<span class="token punctuation">[</span>i<span class="token punctuation">]</span></span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+</p><h4>1, オンラインのブログサービスを使う</h4><p class="contents">はてなブログやBlogger、qiita、zenn等
+使いやすさや記事の露出という点ではいい選択だと思います。
 
-        <span class="token comment">//結果</span>
-        <span class="token comment">//ch0のボリュームは1</span>
-        <span class="token comment">//ch1のボリュームは0.7</span>
-        <span class="token comment">//ch2のボリュームは0.3</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
-こういう用途には冗長で可読性もよくない気がします。
-</p><h4>foreach文の場合</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">        <span class="token class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> audioSourceVolume <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">{</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> <span class="token number">0.7f</span><span class="token punctuation">,</span> <span class="token number">0.3f</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+しかしながら無料で使えるものはユーザビリティーの低くなるような広告がつくか内容が縛られたりできることが限られる傾向がありました。
+また、無料サービスは突然サービス終了したり有料化したりといった事もよくあります。
 
-        <span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> item <span class="token keyword">in</span> audioSourceVolume<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"ch</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">i</span><span class="token punctuation">}</span></span><span class="token string">のボリュームは</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">item</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            i<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+</p><h4>2、CMSを使う。</h4><p class="contents">wordpressの公開にはデータベース等が使えるサーバーが必要なためサーバー代がかかります。
+また、静的サイトと比べて少し重めになる傾向があります。
 
-        <span class="token comment">//結果</span>
-        <span class="token comment">//ch0のボリュームは1</span>
-        <span class="token comment">//ch1のボリュームは0.7</span>
-        <span class="token comment">//ch2のボリュームは0.3</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
-こっちは処理自体はすっきり書けていいんですが、foreach文はindexが使えないので別途index用の変数を宣言する等しないとなりません。
+</p><h4>3、静的サイトジェネレーターを使う。</h4><p class="contents">HUGO、Gatsby、Jekyll等
+静的サイトなのでサイトがとても軽いです。
 
-Array.ForEachやLinqを使ってもやっぱりちょっと長くなっちゃいます。
+しかしコマンド操作やマークダウンを直接書くのはたまにしか書かないであろう自分の用途には適さない気がしました。
+短い期間書き続ける分には慣れるためとても速く記事を書けるようになると思いますが、期間が空く場合コマンドや記述法を確実に忘れる自身があります。
 
-これがJavascriptのforEachメソッドだとこうなります。
-</p><h4>JavascriptのforEachメソッドの場合</h4><p class="contents"></p><pre class="line-numbers code language-js" tabindex="0"><code class="language-js"><span class="token keyword">const</span> audioSourceVolume <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token number">0.3</span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+</p><h4>4、GUI付き静的サイトジェネレーターを使う。</h4><p class="contents">Publii、Gitbook、Catalpa、Phest等
+調べてたらGUI付きの静的サイトジェネレーターというものもあるようでした。かなり理想に近いものもありそうでしたがここまで来ると欲がでてしまいます。
 
-audioSourceVolume<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">e<span class="token punctuation">,</span> i</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">ch</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">のボリュームは</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</p><h3 class="textCaption">ほしい機能</h3><p class="contents">
+</p><ul><li>GitHubPages等無料のホスティングサービスを使いたいためCMSではなく静的サイトジェネレーターで。
+</li><li>操作はすべてGUIでできるようにする。
+</li><li>欲を言うなら自分で使いやすくカスタマイズできるエディター付きで。
+</li><li>コードが汚れるのが嫌なのでエディターはWYSWYGではなくマークダウンで。なおかつHTMLも使えるようにしたい。
+</li><li>マークダウンはGUIコンテキストメニューで簡単に挿入できるようにしたい。
+</li><li>基本はHugo等でも使われるマークダウンだけど見やすさ重視で日本語入力でも入力しやすい独自マークダウンも導入したい。
+</li><li>エディターではテキストとして入力したいが作りこみたい時はVSCodeでタグを打てるようにしたいのでビルド元のデータはHTMLファイルで。
+</li><li>見た目を確認するビュアーはサイズをいろいろ変えて見たいので別ウィンドウがいい。
+</li><li>VSCodeのように保存していないデータも自動でバックアップを取りたい。</li></ul>
 
-<span class="token comment">//結果</span>
-<span class="token comment">//ch0のボリュームは1</span>
-<span class="token comment">//ch1のボリュームは0.7</span>
-<span class="token comment">//ch2のボリュームは0.3</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
-一行で書けます。
-長い変数名の繰り返しやindexの加算処理を省けて可読性も高いです。
-これをC#で使えるようにしたいと思います。
+<p></p><h3 class="textCaption">何でつくるか</h3><p class="contents">いろいろ新しい技術に挑戦してみたくはあったんですが、ほとんどがHTMLのDOM操作的な内容になってくるためHTMLと親和性の高いJavascriptで全部作る事にしました。
 
-</p><h3 class="textCaption">JavascriptのforEachっぽい拡張メソッドを実装する</h3><p class="contents">C#は配列のような組み込み型にもメソッド追加したりできるみたいなのでやってみます。
+プラットフォームはシンプルにWebサイトをデスクトップアプリとして表示する事が得意なNW.jsにしました。
 
-</p><h4>ArrayExtensionクラスに静的メソッドを追加する</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ArrayExtension</span> <span class="token punctuation">{</span>
+</p><h3 class="textCaption">いざ制作！</h3><p class="contents">できました。
+とりあえず最低限の機能が完成したのでブログを書いてみたのがこの記事です。
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token generic-method"><span class="token function">ForEach</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">T<span class="token punctuation">[</span><span class="token punctuation">]</span></span> array<span class="token punctuation">,</span> <span class="token class-name">Action<span class="token punctuation">&lt;</span>T<span class="token punctuation">&gt;</span></span> action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            action<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
+作ってみてわかった事
+</p><h4>やっぱり広く使われてるジェネレーターやサービスはすごい！</h4><p class="contents">だけど自分で自由にカスタマイズできるのはやっぱり楽しいのでよしとします。
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token generic-method"><span class="token function">ForEach</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">&gt;</span></span></span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token class-name">T<span class="token punctuation">[</span><span class="token punctuation">]</span></span> array<span class="token punctuation">,</span> <span class="token class-name">Action<span class="token punctuation">&lt;</span>T<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">&gt;</span></span> action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>Length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            action<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
 
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
-
-上が配列内の要素だけを使うもの、下が要素とindexを使うものです。
-内容はシンプルで引数で受け取ったactionをfor文で回して実行してるだけです。
-
-実行結果はこんな感じです。
-</p><h4>C#に新たに追加したForEachメソッド</h4><p class="contents"></p><pre class="line-numbers code language-cs" tabindex="0"><code class="language-cs">        <span class="token class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> audioSourceVolume <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">{</span> <span class="token number">1.0f</span><span class="token punctuation">,</span> <span class="token number">0.7f</span><span class="token punctuation">,</span> <span class="token number">0.3f</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-        audioSourceVolume<span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span> Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"ch</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">i</span><span class="token punctuation">}</span></span><span class="token string">のボリュームは</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">e</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//結果</span>
-        <span class="token comment">//ch0のボリュームは1 </span>
-        <span class="token comment">//ch1のボリュームは0.7</span>
-        <span class="token comment">//ch2のボリュームは0.3</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p class="contents">
-Javascriptと同じ感覚で書けるようになりました。
-
-ForEachメソッドだとJavascriptの時と同様でcontinueやreturnが使えないといったデメリットもあるんですが、可読性高くサクサク書いていきたい時にはやっぱり重宝します。
-パフォーマンスも関数呼び出しの分多少は落ちるでしょうがパフォーマンスを追求したい時はめんどくさがらずfor文で書けば済む話です。
-
-でもせっかく自由にいじれるので
-</p><h4>次回はこのメソッドでreturnやcontinueを使えるようにしてみようと思います。</h4><p class="contents">
-参考: <a href="https://qiita.com/baba_s/items/807523551a0c79e6a3c2">C#のArrayもList<t>と同じ様に扱いたい</t></a>
-</p></div>
+</p><blockquote class="twitter-tweet" data-theme="light"><p lang="ja" dir="ltr">ゲームを制作する為の技術共有する為のブログを書く為のエディター機能付き静的サイトジェネレーターをNW.js＋Javascriptで作りました！まだ最低限の機能しかないから"さいきょう"には程遠いけどとりあえずブログ書いてビルドできるとこまで行けたのでOKとします。 <a href="https://t.co/EJs0y1wQK1">pic.twitter.com/EJs0y1wQK1</a></p>— なぴぃ (@napiiey) <a href="https://twitter.com/napiiey/status/1543170128556486659?ref_src=twsrc%5Etfw">July 2, 2022</a></blockquote> <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p></p></div>
             </div>
         </section>
         <div id="credit-back">
