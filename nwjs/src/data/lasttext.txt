@@ -1,98 +1,47 @@
-C#で配列をループする時は基本的にはfor文かforeach文を使うのですがJavascriptのforEachメソッドに慣れた身としてはあれを使いたくて発狂する事があります。
+UnityのDebug.Logメソッドで配列等のオブジェクトを表示しようとするとオブジェクト名が表示され中身は見えません。Javascriptで Chrome Devtools に慣れ親しんだ身としては中身を全て確認させてくれー！と思ってしまいます。
 
-例えばこんな時です
-####for文の場合
+####とりあえず調べてみた
+いい方法がないかざっくり調べたところ、配列をjoinメソッドで連結して表示する方法がひっかかりました。でもこれでは型毎に文字列変換しなければならないので何かいい方法がないか考えてみました。
+
+###JSON文字列化してログ表示するメソッドを作る
+JSON化すれば中身を一覧表示できるじゃないかと思って試してみました。
 ```cs
-        float[] audioSourceVolume = new float[] { 1.0f, 0.7f, 0.3f };
+using Newtonsoft.Json;
 
-        for (int i = 0; i < audioSourceVolume.Length; i++) {
-            Debug.Log($"ch{i}のボリュームは{audioSourceVolume[i]}");
-        }
-
-        //結果
-        //ch0のボリュームは1
-        //ch1のボリュームは0.7
-        //ch2のボリュームは0.3
-```
-こういう用途には冗長で可読性もよくない気がします。
-####foreach文の場合
-```cs
-        float[] audioSourceVolume = new float[] { 1.0f, 0.7f, 0.3f };
-
-        int i = 0;
-        foreach (var item in audioSourceVolume) {
-            Debug.Log($"ch{i}のボリュームは{item}");
-            i++;
-        }
-
-        //結果
-        //ch0のボリュームは1
-        //ch1のボリュームは0.7
-        //ch2のボリュームは0.3
-```
-こっちは処理自体はすっきり書けていいんですが、foreach文はindexが使えないので別途index用の変数を宣言する等しないとなりません。
-
-Array.ForEachやLinqを使ってもやっぱりちょっと長くなっちゃいます。
-
-これがJavascriptのforEachメソッドだとこうなります。
-####JavascriptのforEachメソッドの場合
-```js
-const audioSourceVolume = [ 1.0, 0.7, 0.3 ];
-
-audioSourceVolume.forEach((e, i) => { console.log(`ch${i}のボリュームは${e}`); });
-
-//結果
-//ch0のボリュームは1
-//ch1のボリュームは0.7
-//ch2のボリュームは0.3
-```
-一行で書けます。
-長い変数名の繰り返しやindexの加算処理を省けて可読性も高いです。
-これをC#で使えるようにしたいと思います。
-
-###JavascriptのforEachっぽい拡張メソッドを実装する
-C#は配列のような組み込み型にもメソッド追加したりできるみたいなのでやってみます。
-
-####ArrayExtensionクラスに静的メソッドを追加する
-```cs
-public static class ArrayExtension {
-
-    public static void ForEach<T>(this T[] array, Action<T> action) {
-        for (int i = 0; i < array.Length; i++) {
-            action.Invoke(array[i]);
+namespace UnityEngine{
+    public static class DeepLog{
+        public static void Log(object obj){
+            var jsonText = JsonConvert.SerializeObject(obj); //JSON化
+            string type = obj.GetType().ToString(); //型表示
+            type = type.Replace("System.","");
+            Debug.Log($"<color=yellow>{jsonText}</color>   <color=#888888> ({type})</color>"); //色をつけて表示
         }
     }
-
-    public static void ForEach<T>(this T[] array, Action<T, int> action) {
-        for (int i = 0; i < array.Length; i++) {
-            action.Invoke(array[i], i);
-        }
-    }
-
 }
 ```
-
-上が配列内の要素だけを使うもの、下が要素とindexを使うものです。
-内容はシンプルで引数で受け取ったactionをfor文で回して実行してるだけです。
-
-実行結果はこんな感じです。
-####C#に新たに追加したForEachメソッド
+このメソッドを使って以下の5つの型を表示してみます。
 ```cs
-        float[] audioSourceVolume = new float[] { 1.0f, 0.7f, 0.3f };
+    //表示するもの
+    void Start(){
+        DeepLog.Log(77777);
 
-        audioSourceVolume.ForEach((e, i) => { Debug.Log($"ch{i}のボリュームは{e}"); });
+        DeepLog.Log("あいうえお");
 
-        //結果
-        //ch0のボリュームは1 
-        //ch1のボリュームは0.7
-        //ch2のボリュームは0.3
+        string[] test1 = new string[3] {"tes1","tes2","tes3"};
+        DeepLog.Log(test1);
+
+        int[] test2 = new int[3] {1,2,3};
+        DeepLog.Log(test2);
+
+        RoomData room = new RoomData();
+        DeepLog.Log(room); //自作クラス
+    }
 ```
-Javascriptと同じ感覚で書けるようになりました。
+実行！
+<img src="image/be64c5bb41bbe7bb845d4eb679598307.png">
+上手くいきました。
 
-ForEachメソッドだとJavascriptの時と同様でcontinueやreturnが使えないといったデメリットもあるんですが、可読性高くサクサク書いていきたい時にはやっぱり重宝します。
-パフォーマンスも関数呼び出しの分多少は落ちるでしょうがパフォーマンスを追求したい時はめんどくさがらずfor文で書けば済む話です。
+JSON化に関してパフォーマンス的にはSystem.Text.Jsonの方がいいみたいですが対応している型が多いらしいという事でNewtonsoft.Jsonを使用しました。
 
-でもせっかく自由にいじれるので
-####次回はこのメソッドでreturnやcontinueを使えるようにしてみようと思います。
+Chrome devtools のように展開したりはできませんが、とりあえずUnityで手軽にオブジェクトの中身が表示できるようになりました。
 
-参考: <a href="https://qiita.com/baba_s/items/807523551a0c79e6a3c2">C#のArrayもList<T>と同じ様に扱いたい</a>

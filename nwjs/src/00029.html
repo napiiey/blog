@@ -14,7 +14,7 @@ namespace UnityEngine{
             var jsonText = JsonConvert.SerializeObject(obj); //JSON化
             string type = obj.GetType().ToString(); //型表示
             type = type.Replace("System.","");
-            Debug.Log($"&lt;color=yellow>{jsonText}&lt;/color>   &lt;color=#888888> ({type})&lt;/color>"); //色をつけて表示
+            Debug.Log($"<color=yellow>{jsonText}</color>   <color=#888888> ({type})</color>"); //色をつけて表示
         }
     }
 }
