@@ -327,7 +327,7 @@ input:hover {
     /* width: calc(var(--contextbuttonwidth) * 1.2);
     height: calc(var(--contextbuttonwidth) * 1.2); */
     transition: 100ms;
-    transform: translate(-50%,-50%) scale(1.2);
+    transform: translate(-50%,-50%) scale(1.4);
 }
 .contextbutton span {
     position: absolute;

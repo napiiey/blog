@@ -333,6 +333,7 @@ const build = function(number){
 const buildThis = function(){ //ビルド
     let resultHtml = '<!DOCTYPE html>\n' + preview.document.documentElement.outerHTML;
     resultHtml = resultHtml.replace('</title>','</title>\n    <base href="nwjs/src/">');
+    resultHtml = resultHtml.replace('<!-- <script src="js/database.js" defer></script> -->','<script src="js/database.js" defer></script>');
     resultHtml = resultHtml.replace('<!-- <script src="js/blog.js" defer></script> -->','<script src="js/blog.js" defer></script>');
     
     let allTags = createAllTags();
@@ -356,8 +357,8 @@ const buildThis = function(){ //ビルド
     <meta name="twitter:site" content="@napiiey">
     <meta property="twitter:title" content="${description.title}"></meta>
     <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>`);
-    const relatedPages = makeRelatedPages();
-    resultHtml = resultHtml.replace('<section id="articles">', '<section id="articles">\n' + relatedPages);
+    // const relatedPages = makeRelatedPages();
+    // resultHtml = resultHtml.replace('<section id="articles">', '<section id="articles">\n' + relatedPages);
     fs.writeFileSync("../"+String(description.number).padStart(5,"0")+".html", resultHtml);
 
     description.public = 1;
@@ -383,50 +384,50 @@ function escapeUnsafeText(unsafeText){
         }
     );
 }
-const makeRelatedPages = function(){
-    let articleHeads = "";
-    const thisDate = new Date(description.date);
-    let  database = descriptions.slice(0,descriptions.length);
-    database.splice(description.number,1); //現在のページを除外
-    database = database.filter(e=>e && e.public); //非公開ページを除外
-    database.forEach((e,index)=>{
-        let matchTagCount = 0;
-        description.tags.forEach(e2=>{
-            if(e.tags.includes(e2)){matchTagCount++};
-        });
-        const date = new Date(e.date);
-        let relevance = (date - thisDate) / 86400000;
-        if(Math.sign(relevance) === -1){
-            relevance = (relevance * -1) +0.5;
-        }
-        relevance = (matchTagCount + 1) * 100000 - relevance;
-        database[index].relevance = relevance;
-    });
-    database.sort((a,b)=>{
-        return b.relevance - a.relevance;
-    });
+// const makeRelatedPages = function(){
+//     let articleHeads = "";
+//     const thisDate = new Date(description.date);
+//     let  database = descriptions.slice(0,descriptions.length);
+//     database.splice(description.number,1); //現在のページを除外
+//     database = database.filter(e=>e && e.public); //非公開ページを除外
+//     database.forEach((e,index)=>{
+//         let matchTagCount = 0;
+//         description.tags.forEach(e2=>{
+//             if(e.tags.includes(e2)){matchTagCount++};
+//         });
+//         const date = new Date(e.date);
+//         let relevance = (date - thisDate) / 86400000;
+//         if(Math.sign(relevance) === -1){
+//             relevance = (relevance * -1) +0.5;
+//         }
+//         relevance = (matchTagCount + 1) * 100000 - relevance;
+//         database[index].relevance = relevance;
+//     });
+//     database.sort((a,b)=>{
+//         return b.relevance - a.relevance;
+//     });
 
-    let relatedPagesCount = 5; //関連記事表示数
-    for(let i = 0; i < relatedPagesCount; i++){
-        if(!database[i]){break;}
-        const e = database[i];
-        let tagBlocks = "";
-        e.tags.forEach(e2=>{
-            tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
-            <span class="material-icons">sell</span>${e2}</a>`
-        });
-        articleHeads = articleHeads + `
-        <a href="../../${String(e.number).padStart(5,"0")}.html">
-        <div class="i-articlehead">
-        <span class="i-date">${e.date}</span>
-        <span class="i-modified">${e.modified}</span>
-        <div class="i-title">${e.title}</div>
-        <div class="i-tags">${tagBlocks}</div>
-        </div>
-        </a>\n`;
-    }
-    return articleHeads;
-}
+//     let relatedPagesCount = 5; //関連記事表示数
+//     for(let i = 0; i < relatedPagesCount; i++){
+//         if(!database[i]){break;}
+//         const e = database[i];
+//         let tagBlocks = "";
+//         e.tags.forEach(e2=>{
+//             tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
+//             <span class="material-icons">sell</span>${e2}</a>`
+//         });
+//         articleHeads = articleHeads + `
+//         <a href="../../${String(e.number).padStart(5,"0")}.html">
+//         <div class="i-articlehead">
+//         <span class="i-date">${e.date}</span>
+//         <span class="i-modified">${e.modified}</span>
+//         <div class="i-title">${e.title}</div>
+//         <div class="i-tags">${tagBlocks}</div>
+//         </div>
+//         </a>\n`;
+//     }
+//     return articleHeads;
+// }
 const buildTopPage = function(){
     let result = fs.readFileSync("src/index_template.html", "utf-8");
     let articleHeads = "";
@@ -620,7 +621,7 @@ const cancelFileList = function(){
 
 
 
-//コンテキストメニュー
+//右クリックメニューメニュー  -----------------------------------------
 document.addEventListener('contextmenu', (event) => {
     event.preventDefault();
 }, true);
@@ -653,24 +654,7 @@ const closeMenu = function(){
     menu.style.visibility = "hidden";
 }
 
-
-const getStartOfLine = function(e){
-    let startPos = text.lastIndexOf("\n", e.selectionStart) + 1;
-    if(e.selectionStart - (startPos - 1) === 0){
-        startPos = text.lastIndexOf("\n", e.selectionStart - 1) + 1;
-    }
-    return startPos;
-}
-const getEndOfLine = function(e){
-    let startPos = text.lastIndexOf("\n", e.selectionEnd) + 1;
-    let endPos = 0;
-    if(e.selectionStart - (startPos - 1) === 0){
-        endPos = text.indexOf("\n", e.selectionEnd - 1) + 1;
-    }else{
-        endPos = text.indexOf("\n", e.selectionEnd) + 1;
-    }
-    return endPos;
-}
+//右クリックメニューの処理 
 const pushH = function(){
     const e = document.getElementById("editor");
     let startPos = getStartOfLine(e);
@@ -680,25 +664,80 @@ const pushH = function(){
     e.value = text;
     changeText();
 }
-const pushImage = function(){
-    // const e = document.getElementById("editor");
-    // text = text.slice(0, e.selectionStart)
-    // + "**"
-    // + text.slice(e.selectionStart, e.selectionEnd)
-    // + "**"
-    // + text.slice(e.selectionEnd);
-    // e.value = text;
-    // changeText();
+const pushImage = function(){console.log("tes");
+    pushImageAsync();
+}
+const pushImageAsync = async function(){
+    //ファイルを開く処理
+    try {
+        const [handle] = await window.showOpenFilePicker({
+            types: [{
+                accept: {
+                    'iamges/*': [
+                    '.jpg',
+                    '.jpeg',
+                    '.png',
+                    '.gif',
+                    '.svg'
+                    ]
+                }
+            }]
+        })
+        const file = await handle.getFile(); //ファイル選択を待つ
+
+        const img = new Image();
+        img.src = URL.createObjectURL(file); //ファイルをイメージタグ化する
+        img.onload = () => {
+            // canvasを生成
+            const canvas = document.createElement("canvas");
+            // 画像サイズ変換（10kを超えたら720に縮小）
+            canvas.width = file.size > 100000 ? 720 : img.naturalWidth;
+            canvas.height = file.size > 100000 ? canvas.width * (img.height / img.width) : img.naturalHeight;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            //canvasの内容をjpegクオリティ60のdataURLに
+            const dataURL = canvas.toDataURL("image/jpeg", 0.60);
+            console.log(dataURL);
+
+            //base64データに変換
+            const dataValue = dataURL.replace(/data:.*base64,/,"");
+            //フォルダが無ければ生成
+            if (!fs.existsSync(`src/image/${String(description.number).padStart(5,"0")}`)) {
+                fs.mkdirSync(`src/image/${String(description.number).padStart(5,"0")}`);
+            }
+            //保存
+            fs.writeFileSync(`src/image/${String(description.number).padStart(5,"0")}/${file.name.split(".")[0]}.jpg`, dataValue, {encoding:"base64"});
+
+            URL.revokeObjectURL(img.src);
+
+
+            //エディタータグ挿入
+            const e = document.getElementById("editor");
+            text = text.slice(0, e.selectionStart)
+            + `<image src="image/${String(description.number).padStart(5,"0")}/${file.name.split(".")[0]}.jpg">`
+            + text.slice(e.selectionEnd);
+            e.value = text;
+            changeText();
+        };
+
+    } catch (err) {
+        console.error(err.name, err.message);
+    }
+
+    
+}
+const getBase64StringFromDataURL = (dataURL) =>
+    dataURL.replace('data:', '').replace(/^.+,/, '');
+const changeImageSize = function(){
+    
 }
 const pushLine = function(){
-    // const e = document.getElementById("editor");
-    // text = text.slice(0, e.selectionStart)
-    // + "**"
-    // + text.slice(e.selectionStart, e.selectionEnd)
-    // + "**"
-    // + text.slice(e.selectionEnd);
-    // e.value = text;
-    // changeText();
+    const e = document.getElementById("editor");
+    text = `${text.slice(0, e.selectionStart)}<a href="${text.slice(e.selectionStart, e.selectionEnd)}">${text.slice(e.selectionStart, e.selectionEnd)}</a>${text.slice(e.selectionEnd)}`
+    e.value = text;
+    changeText();
 }
 const pushCode = function(){
     const e = document.getElementById("editor");
@@ -721,4 +760,22 @@ const pushBold = function(){
     + text.slice(e.selectionEnd);
     e.value = text;
     changeText();
+}
+
+const getStartOfLine = function(e){
+    let startPos = text.lastIndexOf("\n", e.selectionStart) + 1;
+    if(e.selectionStart - (startPos - 1) === 0){
+        startPos = text.lastIndexOf("\n", e.selectionStart - 1) + 1;
+    }
+    return startPos;
+}
+const getEndOfLine = function(e){
+    let startPos = text.lastIndexOf("\n", e.selectionEnd) + 1;
+    let endPos = 0;
+    if(e.selectionStart - (startPos - 1) === 0){
+        endPos = text.indexOf("\n", e.selectionEnd - 1) + 1;
+    }else{
+        endPos = text.indexOf("\n", e.selectionEnd) + 1;
+    }
+    return endPos;
 }

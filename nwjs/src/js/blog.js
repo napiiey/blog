@@ -1,3 +1,5 @@
+const idString = window.location.href.split('/').pop().split('.').shift();
+const id = Number( idString );
 
 //============================== サーチ =====================================
 const params = {
@@ -71,6 +73,59 @@ const serchKeyword = function() {
     window.location.href = "../../index.html?" + new URLSearchParams(params).toString();
     return false;
 }
+
+
+
+//============================== 関連記事 =====================================
+
+const makeRelatedPages = function(){
+    let articleHeads = "";
+    let deleteIndex = 0;
+    const thisIndex = database.findIndex(e=>e.number === id);
+    const thisData = database[thisIndex];
+    const thisDate = new Date(thisData.date);
+    let  relatedDB = database.slice(0,database.length); 
+    relatedDB.splice(thisIndex,1); //現在のページを除外
+    relatedDB = relatedDB.filter(e=>e && e.public); //非公開ページを除外
+    relatedDB.forEach((e,index)=>{
+        let matchTagCount = 0;
+        thisData.tags.forEach(e2=>{
+            if(e.tags.includes(e2)){matchTagCount++};
+        });
+        const date = new Date(e.date);
+        let relevance = (date - thisDate) / 86400000;
+        if(Math.sign(relevance) === -1){
+            relevance = (relevance * -1) +0.5;
+        }
+        relevance = (matchTagCount + 1) * 100000 - relevance;
+        relatedDB[index].relevance = relevance;
+    });
+    relatedDB.sort((a,b)=>{
+        return b.relevance - a.relevance;
+    });
+
+    let relatedPagesCount = 5; //関連記事表示数
+    for(let i = 0; i < relatedPagesCount; i++){
+        if(!relatedDB[i]){break;}
+        const e = relatedDB[i];
+        let tagBlocks = "";
+        e.tags.forEach(e2=>{
+            tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
+            <span class="material-icons">sell</span>${e2}</a>`
+        });
+        articleHeads = articleHeads + `
+        <a href="../../${String(e.number).padStart(5,"0")}.html">
+        <div class="i-articlehead">
+        <span class="i-date">${e.date}</span>
+        <span class="i-modified">${e.modified}</span>
+        <div class="i-title">${e.title}</div>
+        <div class="i-tags">${tagBlocks}</div>
+        </div>
+        </a>\n`;
+    }
+    return articleHeads;
+}
+document.getElementById("articles").innerHTML = makeRelatedPages();
 
 
 //============================== コメント欄 =====================================
