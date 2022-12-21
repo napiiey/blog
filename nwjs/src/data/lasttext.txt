@@ -1,7 +1,7 @@
 Unity1週間ゲームジャム（#unity1week ）でこんなの作ってみました。
 
 ###【立体パズル】RE:CUBE
-フリーゲーム投稿サイト <a href="https://unityroom.com/games/recube">unityroom https://unityroom.com/games/recube</a>
+フリーゲーム投稿サイト unityroom <a href="https://unityroom.com/games/recube">unityroom https://unityroom.com/games/recube</a>
 <image src="image/00036/image_001_0000.jpg">
 
 ###コンセプト
