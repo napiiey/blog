@@ -74,8 +74,8 @@ const changeTags = function(){
     tagString = document.getElementById("edit-tags").value;
     description.tags = tagString.split(",");
     let tagBlocks = "";
-    description.tags.forEach(e=>tagBlocks = tagBlocks + '<a href="" class="tagblock link-gray">'
-    +'<span class="material-icons">sell</span>'+e+"</a>")
+    description.tags.forEach(e => tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e}" class="tagblock link-gray">
+            <span class="material-icons">sell</span>${e}</a>`)
     preview.document.getElementById("tags").innerHTML = tagBlocks;
     autoBackupData();
 }
@@ -445,7 +445,6 @@ const buildTopPage = function(){
             // return true;
         }
         let tagBlocks = "";
-        console.log(e.tags);
         e.tags.forEach(e2=>{
             tagBlocks = tagBlocks + `<a href="../../index.html?tag=${e2}" class="tagblock link-gray">
             <span class="material-icons">sell</span>${e2}</a>`

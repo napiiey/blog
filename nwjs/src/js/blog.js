@@ -1,5 +1,7 @@
 const idString = window.location.href.split('/').pop().split('.').shift();
-const id = Number( idString );
+const id = Number(idString);
+
+console.log(database);
 
 //============================== サーチ =====================================
 const params = {
@@ -81,7 +83,8 @@ const serchKeyword = function() {
 const makeRelatedPages = function(){
     let articleHeads = "";
     let deleteIndex = 0;
-    const thisIndex = database.findIndex(e=>e.number === id);
+    let thisIndex = database.findIndex(e=>e.number === id);
+    // if(thisIndex === -1){thisIndex = 0}; //トップページの場合はurlがindexになるのでidがNaNになりthisIndexが-1になる。その時のエラー防止。
     const thisData = database[thisIndex];
     const thisDate = new Date(thisData.date);
     let  relatedDB = database.slice(0,database.length); 
@@ -125,7 +128,9 @@ const makeRelatedPages = function(){
     }
     return articleHeads;
 }
-document.getElementById("articles").innerHTML = makeRelatedPages();
+if(idString !== "index"){
+    document.getElementById("articles").innerHTML = makeRelatedPages();
+}
 
 
 //============================== コメント欄 =====================================
