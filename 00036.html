@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <title>【3Dパズル】RE:CUBE</title>
+    <base href="nwjs/src/">
+    <!-- Google Tag Manager -->
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N69M6GF');</script>
+    <!-- End Google Tag Manager -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/database.js" defer></script>
+    <script src="js/blog.js" defer></script>
+        <meta property="og:title" content="【3Dパズル】RE:CUBE">
+    <meta property="og:description" content="Unity1週間ゲームジャム（#unity1week）でこんなの作ってみました。【立体パズル】RE:CUBEフリーゲーム投稿サイトunityroomhttps://unityroom.com/gam…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/00036.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="【3Dパズル】RE:CUBE"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログでいい</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+<option>javascript</option>
+<option>Web</option>
+<option>雑記</option>
+<option>Unity</option>
+<option>C＃</option>
+<option>作業合宿オンライン</option>
+<option>自作アプリ</option>
+<option>自作ゲーム,Unity,unity1week</option>
+<option>自作ゲーム</option>
+<option>unity1week</option>
+
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00036.html
+&text=【3Dパズル】RE:CUBE"></a>
+    </div>
+    <div id="rightcolumn"></div>
+    <main>
+        <section>
+            <div class="articlehead">
+                <span id="date">2022/12/21</span>
+                <span id="modified" style="visibility: hidden;"></span>
+                <h1 id="title">【3Dパズル】RE:CUBE</h1>
+                <div id="tags"><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>自作ゲーム</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>Unity</a><a href="" class="tagblock link-gray"><span class="material-icons">sell</span>unity1week</a></div>
+            </div>
+            <div id="textouter">
+                <div id="text"><p class="contents">Unity1週間ゲームジャム（#unity1week ）でこんなの作ってみました。
+
+</p><h3 class="textCaption">【立体パズル】RE:CUBE</h3><p class="contents">フリーゲーム投稿サイト <a href="unityroom https://unityroom.com/games/recube">unityroom https://unityroom.com/games/recube</a>
+<img src="image/00036/image_001_0000.jpg">
+
+</p><h3 class="textCaption">コンセプト</h3><p class="contents">バラバラになったキューブを再び組み上げるシンプルなパズルゲームです。
+今回はハイパーカジュアルを意識して文字による説明とかは極力省いて適当にタップするだけでなんとなくわかるようにしてみました。
+ハイパーカジュアルを作っていきたいわけではないんですが、今はテキスト多めのステージ制RPGをメインで作ってるのでその息抜きだし全く違うものを作ろうという感じでした。
+<img src="image/00036/image_002_0038.jpg">
+
+</p><h3 class="textCaption">制作記</h3><p class="contents"></p><h4>1日目～3日目</h4><p class="contents">「Re」というお題が発表されるも結構応用範囲が広く迷いました。基本的にこの手のお題で作るものはなるべく直球でそのお題で作られたとわかりやすい事を心がけてます。なのでReという接頭辞自体の意味合い「再び」とか「繰り返し」とか「反対」といった意味合いを含んだものにしました。
+
+途中、Reflectionを使ったパズルやバトルゲームを思いついたもののおもしろいと思えず却下。
+Reverseを使ったパズルを思いついたものの過去のお題で「反対」というのがあったらしいので「再び」とかの意味にしようという事で却下。
+そして回帰的な伏線回収を含むアドベンチャーゲームの企画に行き着くも1週間で作るネタじゃないと思い断念。（このネタは今後の作品用で使いたい）
+
+RE:CUBEの企画が決まった頃には3日目が終わってました。
+
+</p><h4>4日目</h4><p class="contents">残り4日で作る事になりました。
+今回の企画はシンプルだし前回も4日ぐらいで作っているのでいけるはずです。
+実際この日のうちにアルゴリズムの基礎が完成してとりあえず生成してキューブを操作して遊べるところまでいけました。音楽と効果音もこの時点でついてました。
+
+RE:CUBEの問題作成アルゴリズムはたぶんダンジョン自動生成のアルゴリズムに近いもので、それを3次元にした感じ。ダンジョン自動生成って思ったよりぜんぜん簡単かもしれないっていう知見が得られてよかったです。今後何かに活かしていきたい。
+
+</p><h4>5日目～6日目</h4><p class="contents">クリアの判定等を実装。Nomal以上だとバグがひどくひたすらバグを修正してました。
+</p><ul><li>立方体の形に生成されない
+</li><li>画面の中心がずれる
+</li><li>モバイルで音が出ない
+</li><li>モバイルで視点が回らない
+</li><li>縦画面の時見ずらい</li></ul>
+<p></p><h4>7日目</h4><p class="contents">最終日は極力テストプレイと調整程度に留めて投稿用の文章やSS動画の撮影を行いたかったんですが、間に合ってないので引き続き必要な機能追加してました。
+</p><ul><li>Undo機能の実装
+</li><li>ランキングの実装
+</li><li>ゲーム投稿用の紹介と操作説明
+</li><li>サムネ用GIF動画の撮影
+</li><li>Twitter投稿用の文章と動画撮影</li></ul>
+そしてなんとか間に合いました。
+
+<p></p><h3 class="textCaption">反省点</h3><p class="contents">モバイル環境で文字入力ができない問題は結局回避できませんでした。WebGLInputというパッケージで解決できそうだったんですが、ランキングのパッケージと相性が悪かったみたいで今回は断念。
+
+難易度が極端なのでできる事ならEasyとNomalの間・NomalとHardの間を作りたかった。でもまあ制作期間的に厳しいだろうという判断でカットしました。クリア演出ももうちょっと遊びたかったけどタイムアップでした。
+
+</p><h3 class="textCaption">得られたもの</h3><p class="contents"></p><ul><li>次に活かせそうな膨大な知見
+</li><li>完成させる力
+</li><li>完成させて反応を得る事による事によるモチベと自信アップ</li></ul>
+一週間企画は自分の成長第一でやってます。長めの制作だとどうしてもダレてしまうのでたまに短期間でガーっとつくるとメリハリがつきます。
+
+<p></p><h4>そしてステージ制RPGの制作に戻ります。</h4><p class="contents">これについてはブログに書いてなかったのでまたそのうち。
+
+</p></div>
+            </div>
+        </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4 id="commentTitle">
+                    <span id="commentIcon" class="material-icons">forum</span>コメント
+                </h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
+    </main>
+    <footer id="footer">
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>

@@ -349,7 +349,7 @@ const buildThis = function(){ //ビルド
     resultHtml = resultHtml.replace('<meta property="og:title" content="">',
     `    <meta property="og:title" content="${description.title}">
     <meta property="og:description" content="${descriptionText}">
-    <meta property="og:url" content="https://napiiey.github.io/blog/index.html">
+    <meta property="og:url" content="https://napiiey.github.io/blog/${String(description.number).padStart(5,"0")}.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
     <meta property="og:site_name" content="なぴぃブログでいい">

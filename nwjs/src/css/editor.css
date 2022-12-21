@@ -97,6 +97,7 @@ input:hover {
     color: #444;
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 100%;
+    resize: none;
 }
 #editor:focus{
     outline: none;

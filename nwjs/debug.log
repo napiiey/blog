@@ -278,3 +278,9 @@
 [0915/090825.055:ERROR:zip.cc(202)] Cannot open ZIP from file handle 00000000000001EC
 [0915/220625.517:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 0000000000000048
 [0915/220625.517:ERROR:zip.cc(202)] Cannot open ZIP from file handle 0000000000000048
+[0916/010113.961:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 00000000000001F0
+[0916/010113.961:ERROR:zip.cc(202)] Cannot open ZIP from file handle 00000000000001F0
+[0916/010138.587:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 00000000000001EC
+[0916/010138.587:ERROR:zip.cc(202)] Cannot open ZIP from file handle 00000000000001EC
+[1221/074427.308:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 0000000000000228
+[1221/074427.313:ERROR:zip.cc(202)] Cannot open ZIP from file handle 0000000000000228
