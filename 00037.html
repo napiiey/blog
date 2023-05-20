@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja"><head prefix="og:http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <title>ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法</title>
+    <base href="nwjs/src/">
+    <!-- Google Tag Manager -->
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N69M6GF');</script>
+    <!-- End Google Tag Manager -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all" onload="this.media='all'">
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/database.js" defer></script>
+    <script src="js/blog.js" defer></script>
+        <meta property="og:title" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法">
+    <meta property="og:description" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとして詰まりポイントがあったのでメモ。URPのシェーダーはMaterial.mainTextureScale…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/00037.html">
+    <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
+    <meta property="og:type" content="blog">
+    <meta property="og:site_name" content="なぴぃブログでいい">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@napiiey">
+    <meta property="twitter:title" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法"></meta>
+    <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>&lt;iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
+    height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header id="header">
+        <a href="../../index.html" class="link-white">
+            <p class="center" id="blogtitle">なぴぃブログでいい</p>
+        </a>
+        <div id="sort" class="center">
+            <div>
+                <select name="tag" id="select_tag" onchange="serchKeyword()">
+                    <option>全てのタグ</option>
+<option>javascript</option>
+<option>Web</option>
+<option>雑記</option>
+<option>Unity</option>
+<option>C＃</option>
+<option>作業合宿オンライン</option>
+<option>自作アプリ</option>
+<option>自作ゲーム</option>
+<option>unity1week</option>
+<option></option>
+
+                </select>
+            </div>
+            <div>
+                <form action="../../index.html" name="serch" method="get" onsubmit="return serchKeyword()">
+                    <input type="text" name="keyword" id="search_text" placeholder="検索ワードを入力">
+                </form>
+            </div>
+        </div>
+    </header>
+    <div id="leftcolumn">
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00037.html
+&text=ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法"></a>
+    </div>
+    <div id="rightcolumn"></div>
+    <main>
+        <section>
+            <div class="articlehead">
+                <span id="date">2023/5/20</span>
+                <span id="modified" style="visibility: hidden;"></span>
+                <h1 id="title">ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法</h1>
+                <div id="tags"><a href="../../index.html?tag=" class="tagblock link-gray">
+            <span class="material-icons">sell</span></a></div>
+            </div>
+            <div id="textouter">
+                <div id="text"><p class="contents">ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとして詰まりポイントがあったのでメモ。
+
+URPのシェーダーはMaterial.mainTextureScaleとMaterial.mainTextureOffsetを使ってタイリングを変更できます。しかしURPのLitシェーダーを参考にVector2でTilingとOffsetという変数を作ってスクリプトから値を変えようとしたところ値が変わりませんでした。
+
+調べたところ以下のスレッドを発見。
+Question How do I access a material's mainTextureScale and mainTextureOffset in a LWRP shader graph?
+<a href="https://forum.unity.com/threads/how-do-i-access-a-materials-maintexturescale-and-maintextureoffset-in-a-lwrp-shader-graph.663127/">https://forum.unity.com/threads/how-do-i-access-a-materials-maintexturescale-and-maintextureoffset-in-a-lwrp-shader-graph.663127/</a>
+
+<b>どうやら Vector4の _MainTex_ST という変数を宣言すれば他のシェーダーのようにスクリプトからアクセスできるようになるようです。</b>
+
+しかしここで問題発生。ここに載ってたようにつなぐとURPのLitシェーダーとは違うOffsetの挙動になってしまいました。
+Litシェーダー等はOffset = 0で下のタイルが選択されていたと思います。
+正直上から下の方がわかりやすいのですが他のシェーダーと揃ってないと何かと面倒なので揃える事にします。
+<img src="image/00037/b81e0cb1d5dc06988649ea9ed0278913.jpg">
+<b>Offsetのyの値をOneMinusで反転し、そこからTilingの値を減算しています。</b>
+これで他のシェーダーと同じ値で使いまわせるようになりました。</p></div>
+            </div>
+        </section>
+        <div id="credit-back">
+            <div id="credit-outer">
+                <div style="width:60px;height:60px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+                <p id="credit">
+                    なぴぃ<br>
+                    Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+                </p>
+                <a id="followbutton" href="https://twitter.com/napiiey">フォロー</a>
+            </div>
+        </div>
+        <div id="relatedpages">
+            <div id="relatedpageshead">
+                <span class="material-icons" id="relatedpagesicon">library_books</span>
+                関連記事
+            </div>
+            <section id="articles">
+            </section>
+        </div>
+        <div id="commentArea">
+            <form id="commentForm">
+                <h4 id="commentTitle">
+                    <span id="commentIcon" class="material-icons">forum</span>コメント
+                </h4>
+                <textarea id="commentInput" placeholder="コメント" required=""></textarea><br>
+                <input type="button" value="書き込む" onclick="postForm();">
+            </form>
+            <div id="comments"></div>
+        </div>
+    </main>
+    <footer id="footer">
+        <div id="license">
+            <div style="width:100px;height:99px;background-image:url(image/napiiey_round.png);background-size:cover;float:left"></div>
+            <p>
+                なぴぃ<br>
+                Twitter：<a href="https://twitter.com/napiiey">@napiiey</a>
+            </p>
+        </div>
+    </footer>
+</body></html>
