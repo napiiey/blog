@@ -17,7 +17,7 @@
     <script src="js/database.js" defer></script>
     <script src="js/blog.js" defer></script>
         <meta property="og:title" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法">
-    <meta property="og:description" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとして詰まりポイントがあったのでメモ。URPのシェーダーはMaterial.mainTextureScale…">
+    <meta property="og:description" content="ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとしたところ詰まりポイントがあったのでメモ。URPのシェーダーはMaterial.mainTextureSc…">
     <meta property="og:url" content="https://napiiey.github.io/blog/00037.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
@@ -29,8 +29,8 @@
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript>&lt;iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
-    height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M6GF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <header id="header">
         <a href="../../index.html" class="link-white">
@@ -49,7 +49,7 @@
 <option>自作アプリ</option>
 <option>自作ゲーム</option>
 <option>unity1week</option>
-<option></option>
+<option>ShaderGraph</option>
 
                 </select>
             </div>
@@ -71,11 +71,13 @@
                 <span id="date">2023/5/20</span>
                 <span id="modified" style="visibility: hidden;"></span>
                 <h1 id="title">ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更する方法</h1>
-                <div id="tags"><a href="../../index.html?tag=" class="tagblock link-gray">
-            <span class="material-icons">sell</span></a></div>
+                <div id="tags"><a href="../../index.html?tag=自作ゲーム" class="tagblock link-gray">
+            <span class="material-icons">sell</span>自作ゲーム</a><a href="../../index.html?tag=Unity" class="tagblock link-gray">
+            <span class="material-icons">sell</span>Unity</a><a href="../../index.html?tag=ShaderGraph" class="tagblock link-gray">
+            <span class="material-icons">sell</span>ShaderGraph</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとして詰まりポイントがあったのでメモ。
+                <div id="text"><p class="contents">ShaderGraphで作ったシェーダーにスクリプトからテクスチャーオフセットを変更しようとしたところ詰まりポイントがあったのでメモ。
 
 URPのシェーダーはMaterial.mainTextureScaleとMaterial.mainTextureOffsetを使ってタイリングを変更できます。しかしURPのLitシェーダーを参考にVector2でTilingとOffsetという変数を作ってスクリプトから値を変えようとしたところ値が変わりませんでした。
 
@@ -90,6 +92,7 @@ Litシェーダー等はOffset = 0で下のタイルが選択されていたと�
 正直上から下の方がわかりやすいのですが他のシェーダーと揃ってないと何かと面倒なので揃える事にします。
 <img src="image/00037/b81e0cb1d5dc06988649ea9ed0278913.jpg">
 <b>Offsetのyの値をOneMinusで反転し、そこからTilingの値を減算しています。</b>
+
 これで他のシェーダーと同じ値で使いまわせるようになりました。</p></div>
             </div>
         </section>
