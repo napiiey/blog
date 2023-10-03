@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head prefix="og:http://ogp.me/ns#">
     <meta charset="utf-8">
-    <title>TextMeshPro フォントAtlas作成のコツ</title>
+    <title>VSCode 効率爆上がりなショートカット3選</title>
     <base href="nwjs/src/">
     <!-- Google Tag Manager -->
     <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-N69M6GF"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -16,15 +16,15 @@
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/database.js" defer></script>
     <script src="js/blog.js" defer></script>
-        <meta property="og:title" content="TextMeshPro フォントAtlas作成のコツ">
-    <meta property="og:description" content="TextMeshProでフォントを表示するにはFontAtlasの作成が必要になります。このAtlasの作成に毎度失敗して調べなおしになるのでひっかかりやすいポイントと情報をまとめる事にしました。（…">
-    <meta property="og:url" content="https://napiiey.github.io/blog/00028.html">
+        <meta property="og:title" content="VSCode 効率爆上がりなショートカット3選">
+    <meta property="og:description" content="個人的に固有のショートカットキーはどうせすぐ忘れちゃうからマウス操作でも困らない機能はマウス操作でする派です。それでもこれがない開発は考えられないという程最近よく使ってるショートカットキーを3つ紹介…">
+    <meta property="og:url" content="https://napiiey.github.io/blog/00038.html">
     <meta property="og:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg">
     <meta property="og:type" content="blog">
     <meta property="og:site_name" content="なぴぃブログでいい">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@napiiey">
-    <meta property="twitter:title" content="TextMeshPro フォントAtlas作成のコツ"></meta>
+    <meta property="twitter:title" content="VSCode 効率爆上がりなショートカット3選"></meta>
     <meta property="twitter:image" content="https://napiiey.github.io/blog/nwjs/src/image/napiiey_ogimage.jpg"></meta>
 </head>
 <body>
@@ -62,38 +62,39 @@
         </div>
     </header>
     <div id="leftcolumn">
-        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00028.html
-&text=TextMeshPro フォントAtlas作成のコツ"></a>
+        <a id="twittershare" href="https://twitter.com/share?url=https://napiiey.github.io/blog/00038.html
+&text=VSCode 効率爆上がりなショートカット3選"></a>
     </div>
     <div id="rightcolumn"></div>
     <main>
         <section>
             <div class="articlehead">
-                <span id="date">2022/7/18</span>
+                <span id="date">2023/10/3</span>
                 <span id="modified" style="visibility: hidden;"></span>
-                <h1 id="title">TextMeshPro フォントAtlas作成のコツ</h1>
-                <div id="tags"><a href="../../index.html?tag=Unity" class="tagblock link-gray">
-            <span class="material-icons">sell</span>Unity</a></div>
+                <h1 id="title">VSCode 効率爆上がりなショートカット3選</h1>
+                <div id="tags"><a href="../../index.html?tag=VSCode" class="tagblock link-gray">
+            <span class="material-icons">sell</span>VSCode</a><a href="../../index.html?tag=C＃" class="tagblock link-gray">
+            <span class="material-icons">sell</span>C＃</a></div>
             </div>
             <div id="textouter">
-                <div id="text"><p class="contents">TextMeshProでフォントを表示するにはFont Atlasの作成が必要になります。
-このAtlasの作成に毎度失敗して調べなおしになるのでひっかかりやすいポイントと情報をまとめる事にしました。（Unity 2021.3.2f1）
+                <div id="text"><p class="contents">個人的に固有のショートカットキーはどうせすぐ忘れちゃうからマウス操作でも困らない機能はマウス操作でする派です。
+それでもこれがない開発は考えられないという程最近よく使ってるショートカットキーを3つ紹介します。（よく使うくせにたまに忘れるので備忘録）
 
-</p><h3 class="textCaption">フォントAtlasの作成手順</h3><p class="contents"></p><ul><li>Window &gt; TextMeshPro &gt; Font Asset Creator　を開きます。
-</li><li>設定を調整した後「Generate Font Atlas」でフォントを作成します。
-</li><li>ジェネレート時のログで「Excluded characters」が1以上になっている場合はAtlas Resolutionが足りません。最下部に表示される画像がスカスカな場合は逆にAtlas Resolutionが余っているので小さくします。
-</li><li>Save As でフォント用に作成したフォルダに保存します。</li></ul>
-<p></p><h3 class="textCaption">Font Asset Creator の設定項目</h3><p class="contents"></p><ul><li>Source Font File　元になるフォントを選択します
-</li><li>Sampling Point Size　Auto Sizing だと思わぬサイズで作成されてしまいフォントがつぶれたりする為必ずCustomSizeで作成します。サイズは50程あればそこそこ大きいサイズで描画してもつぶれません。フォントの角が丸まってもよい場合は20程度まで小さくできます。
-</li><li>Padding　この値が小さすぎると文字装飾で使える余白が減り太いOutlineや大きくずらしたUnderlayが使えません。Sampling Point Size の20%程度確保するとある程度自由に設定できるようになります。
-</li><li>Packing Mwthod　Fastで問題なさそうです。
-</li><li>Atlas Resolution　アトラスを展開できる領域のサイズです。日本語をほぼカバーするには4096x4096程度は必要になります。先ほど書いた作成手順を参考に調整します。
-</li><li>Charactor Set　日本語フォントの場合は Custom Character を選択し Custom Character Listに使用する文字一覧を入力します。（参考1：<a href="https://qiita.com/kgsi/items/08a1c78b3bee71136156">UnityのText Mesh Proでほぼ全ての日本語を表示させる</a>　参考2：<a https:="" www.create-forever.games="" textmeshpro-character-list="" "="">[TextMeshPro]日本語一覧</a>）
-</li><li>Render Mode　基本はSDFAAで。SDF16等を使うと大きく表示した時もキリっと表示できるように感じましたが作成にすごく時間がかかります。
-</li><li>Get Kerning Pairs　特定文字ペア間の間隔を調整する為のデータを元のフォントからコピーします。</li></ul>
-<img src="image/048acd357855b0be44624443dc408bbf.png">
+</p><h3 class="textCaption">Ctrl + D</h3><p class="contents">複数の同じテキストを同時編集します
+Ctrl ＋H 等でも一括置き換えができますが、これはもっと小回りが利きます。
+目当てのテキストを範囲選択した状態で Ctrl + D すると近くの同じテキストが1つ追加で選択状態になります。長押しすると全ての同じテキストが選択されます。その状態でテキストを打つと全て一気に編集できます。この手軽さが慣れるととっても便利でひたすら多用してます。
 
-（参考：<a　href="https: docs.unity3d.com="" packages="" com.unity.textmeshpro@4.0="" manual="" fontassetscreator.html"="">Font Asset Creator | TextMeshPro | 4.0.0-pre.1 - Unity - Manual<p></p></a　href="https:></div>
+</p><h3 class="textCaption">Ctrl + P</h3><p class="contents">最近開いたファイル一覧を開きます。
+1つ前に編集したファイルに戻ったり2つのファイルを行き来したい事ってないですか？
+Ctrl + P をクリックするとファイル一覧が開き、最近開いた順に上から並びます。
+Ctrl + P  ↓ Enter の順でクリックすると1つ前に開いていたファイルが開けます。
+
+ちなみに同時に検索窓も開くのでそのままファイル名を入れると絞り込めます。とっても便利！
+
+</p><h3 class="textCaption">Ctrl + .</h3><p class="contents">プロパティの形式を式本体や自動プロパティに変換したり、コンストラクタを自動生成したり、対象の要素にあわせてかなりいろいろな変換を提案してくれます。Quick Fixという機能らしい。
+Ctrl + R でリファクター機能も呼び出せるんですが、それより使いどころの多いちょっとした変換等をいろいろ提供してくれます。
+
+できる事が多すぎて把握しきれてないんですが、いろんなコードクリックして Ctrl + . してると「そここう直せるよ！」みたいな提案をしてくれるとだけ覚えておくといいかもしれません。</p></div>
             </div>
         </section>
         <div id="credit-back">
