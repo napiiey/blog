@@ -295,3 +295,12 @@
 [1003/134354.384:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from D:\Users\sdt5\Documents\Mainãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ\Webåˆ¶ä½œãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸\napiiey.github.io\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
 [1003/135248.447:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 00000000000001F0
 [1003/135248.447:ERROR:zip.cc(202)] Cannot open ZIP from file handle 00000000000001F0
+[0803/222157.695:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222209.675:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222216.219:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222238.039:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222354.825:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222413.263:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222417.021:ERROR:main_dll_loader_win.cc(111)] Failed to load NW DLL from C:\Main\Programing\blog\nwjs\nw.dll: Žw’è‚³‚ê‚½ƒ‚ƒWƒ…[ƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB (0x7E)
+[0803/222537.998:ERROR:zip_reader.cc(153)] Cannot open ZIP from file handle 0000000000000224
+[0803/222537.998:ERROR:zip.cc(202)] Cannot open ZIP from file handle 0000000000000224
